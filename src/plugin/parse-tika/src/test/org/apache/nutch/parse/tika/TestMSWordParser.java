@@ -17,6 +17,14 @@
 
 package org.apache.nutch.parse.tika;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 import org.apache.avro.util.Utf8;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.parse.Parse;
@@ -28,14 +36,6 @@ import org.apache.nutch.util.MimeUtil;
 import org.apache.nutch.util.NutchConfiguration;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for MSWordParser.

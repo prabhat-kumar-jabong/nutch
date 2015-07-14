@@ -16,7 +16,7 @@
  */
 package org.apache.nutch.parse.tika;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.DataInputStream;
 import java.io.File;

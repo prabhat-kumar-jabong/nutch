@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.nutch.jabong.JUtil;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.urlfilter.api.RegexRule;
 import org.apache.nutch.urlfilter.api.RegexURLFilterBase;
 import org.apache.nutch.util.NutchConfiguration;
@@ -64,7 +66,8 @@ public class RegexURLFilter extends RegexURLFilterBase {
     if (stringRules != null) {
       return new StringReader(stringRules);
     }
-    String fileRules = conf.get(URLFILTER_REGEX_FILE);
+//    String fileRules = conf.get(URLFILTER_REGEX_FILE);
+    String fileRules = JUtil.getValue(conf, URLFILTER_REGEX_FILE, JabongKey.TYPE);
     return conf.getConfResourceAsReader(fileRules);
   }
 

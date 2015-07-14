@@ -18,18 +18,15 @@ package org.apache.nutch.fetcher;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
-import java.util.StringTokenizer;
 
 import org.apache.avro.util.Utf8;
 import org.apache.gora.filter.FilterOp;
 import org.apache.gora.filter.MapFieldValueFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.gora.mapreduce.GoraMapper;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Job;
@@ -37,6 +34,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.nutch.crawl.GeneratorJob;
 import org.apache.nutch.crawl.URLPartitioner.FetchEntryPartitioner;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Nutch;
 import org.apache.nutch.parse.ParserJob;
 import org.apache.nutch.protocol.ProtocolFactory;
@@ -49,7 +47,9 @@ import org.apache.nutch.util.NutchTool;
 import org.apache.nutch.util.TableUtil;
 import org.apache.nutch.util.TimingUtil;
 import org.apache.nutch.util.ToolUtil;
-import org.apache.gora.mapreduce.GoraMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Multi-threaded fetcher.
@@ -309,7 +309,12 @@ public class FetcherJob extends NutchTool implements Tool {
         numTasks = Integer.parseInt(args[++i]);
       } else if ("-crawlId".equals(args[i])) {
         getConf().set(Nutch.CRAWL_ID_KEY, args[++i]);
-      } else {
+      
+	    }else if("-namespace".equals(args[i])){
+	  	  getConf().set(JabongKey.NAMESPACE, args[i + 1]);
+	        i++;
+	    } 
+      else {
         throw new IllegalArgumentException("arg " + args[i] + " not recognized");
       }
     }

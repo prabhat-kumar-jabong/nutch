@@ -28,8 +28,14 @@
 	  <plugin id="parse-tika" />
 	</mimeType>
 
-	<mimeType name="text/html">
+	<!--mimeType name="text/html">
 		<plugin id="parse-html" />
+	</mimeType-->
+	<mimeType name="text/html">
+		<plugin id="parse-jabonghtml" />
+	</mimeType>
+	<mimeType name="application/xml">
+		<plugin id="parse-sitemap" />
 	</mimeType>
 
         <mimeType name="application/xhtml+xml">
@@ -81,10 +87,14 @@
 	<!--  alias mappings for parse-xxx names to the actual extension implementation 
 	ids described in each plugin's plugin.xml file -->
 	<aliases>
-		<alias name="parse-html"
-			extension-id="org.apache.nutch.parse.html.HtmlParser" />
+		<!--alias name="parse-html"
+			extension-id="org.apache.nutch.parse.html.HtmlParser" /-->
+		<alias name="parse-jabonghtml"
+			extension-id="org.apache.nutch.parse.jabonghtml.HtmlParser" />
 		<alias name="parse-tika" 
 			extension-id="org.apache.nutch.parse.tika.TikaParser" />
+		<alias name="parse-sitemap" 
+			extension-id="org.apache.nutch.parse.sitemap.SitemapParser" />
 		<alias name="parse-ext" extension-id="ExtParser" />
 		<alias name="parse-js" extension-id="JSParser" />
 		<alias name="feed"

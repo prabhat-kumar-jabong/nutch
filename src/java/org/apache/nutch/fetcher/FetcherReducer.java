@@ -495,38 +495,45 @@ public class FetcherReducer extends
 
             // fetch the page
             final Protocol protocol = this.protocolFactory.getProtocol(fit.url);
-            final BaseRobotRules rules = protocol.getRobotRules(fit.url,
-                fit.page);
-            if (!rules.isAllowed(fit.u.toString())) {
-              // unblock
-              fetchQueues.finishFetchItem(fit, true);
-              if (LOG.isDebugEnabled()) {
-                LOG.debug("Denied by robots.txt: " + fit.url);
-              }
-              output(fit, null, ProtocolStatusUtils.STATUS_ROBOTS_DENIED,
-                  CrawlStatus.STATUS_GONE);
-              continue;
-            }
-            if (rules.getCrawlDelay() > 0) {
-              if (rules.getCrawlDelay() > maxCrawlDelay && maxCrawlDelay >= 0) {
-                // unblock
-                fetchQueues.finishFetchItem(fit, true);
-                LOG.debug("Crawl-Delay for " + fit.url + " too long ("
-                    + rules.getCrawlDelay() + "), skipping");
-                output(fit, null, ProtocolStatusUtils.STATUS_ROBOTS_DENIED,
-                    CrawlStatus.STATUS_GONE);
-                continue;
-              } else {
-                final FetchItemQueue fiq = fetchQueues
-                    .getFetchItemQueue(fit.queueID);
-                fiq.crawlDelay = rules.getCrawlDelay();
-                if (LOG.isDebugEnabled()) {
-                  LOG.info("Crawl delay for queue: " + fit.queueID
-                      + " is set to " + fiq.crawlDelay
-                      + " as per robots.txt. url: " + fit.url);
-                }
-              }
-            }
+            
+            /** ignoring robots rule **/
+            
+//            final BaseRobotRules rules = protocol.getRobotRules(fit.url,
+//                fit.page);
+//
+//            if (!rules.isAllowed(fit.u.toString())) {
+//              // unblock
+//              fetchQueues.finishFetchItem(fit, true);
+//              if (LOG.isDebugEnabled()) {
+//                LOG.debug("Denied by robots.txt: " + fit.url);
+//              }
+//              output(fit, null, ProtocolStatusUtils.STATUS_ROBOTS_DENIED,
+//                  CrawlStatus.STATUS_GONE);
+//              continue;
+//            }
+//            if (rules.getCrawlDelay() > 0) {
+//              if (rules.getCrawlDelay() > maxCrawlDelay && maxCrawlDelay >= 0) {
+//                // unblock
+//                fetchQueues.finishFetchItem(fit, true);
+//                LOG.debug("Crawl-Delay for " + fit.url + " too long ("
+//                    + rules.getCrawlDelay() + "), skipping");
+//                output(fit, null, ProtocolStatusUtils.STATUS_ROBOTS_DENIED,
+//                    CrawlStatus.STATUS_GONE);
+//                continue;
+//              } else {
+//                final FetchItemQueue fiq = fetchQueues
+//                    .getFetchItemQueue(fit.queueID);
+//                fiq.crawlDelay = rules.getCrawlDelay();
+//                if (LOG.isDebugEnabled()) {
+//                  LOG.info("Crawl delay for queue: " + fit.queueID
+//                      + " is set to " + fiq.crawlDelay
+//                      + " as per robots.txt. url: " + fit.url);
+//                }
+//              }
+//            }
+            
+            /****  end *******/
+            
             final ProtocolOutput output = protocol.getProtocolOutput(fit.url,
                 fit.page);
             final ProtocolStatus status = output.getStatus();

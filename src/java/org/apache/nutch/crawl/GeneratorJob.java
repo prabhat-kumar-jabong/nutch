@@ -37,6 +37,8 @@ import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.nutch.crawl.URLPartitioner.SelectorEntryPartitioner;
+import org.apache.nutch.jabong.JUtil;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Nutch;
 import org.apache.nutch.storage.StorageUtils;
 import org.apache.nutch.storage.WebPage;
@@ -45,6 +47,7 @@ import org.apache.nutch.util.NutchJob;
 import org.apache.nutch.util.NutchTool;
 import org.apache.nutch.util.TimingUtil;
 import org.apache.nutch.util.ToolUtil;
+
 
 public class GeneratorJob extends NutchTool implements Tool {
   public static final String GENERATE_UPDATE_CRAWLDB = "generate.update.crawldb";
@@ -289,7 +292,20 @@ public class GeneratorJob extends NutchTool implements Tool {
         topN = Long.parseLong(args[++i]);
       } else if ("-noFilter".equals(args[i])) {
         filter = false;
-      } else if ("-noNorm".equals(args[i])) {
+      }else if("-namespace".equals(args[i])){
+    	  getConf().set(JabongKey.NAMESPACE, args[i + 1]);
+          i++;
+      }else if("-type".equals(args[i])){
+    	  String type =  args[i + 1];
+    	  if(JUtil.isValidType(type)){
+	    	  getConf().set(JabongKey.TYPE, type);
+	          i++;
+    	  }else{
+    		  System.err.println("Unrecognized value of " + args[i]+" "+type); 
+    		  return -1;
+    	  }
+      }
+      else if ("-noNorm".equals(args[i])) {
         norm = false;
       } else if ("-crawlId".equals(args[i])) {
         getConf().set(Nutch.CRAWL_ID_KEY, args[++i]);

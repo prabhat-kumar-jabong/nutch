@@ -26,7 +26,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.avro.util.Utf8;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.nutch.jabong.JUtil;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.net.protocols.Response;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.protocol.Protocol;
@@ -195,7 +198,14 @@ public abstract class HttpBase implements Protocol {
       URL u = new URL(url);
 
       long startTime = System.currentTimeMillis();
-      Response response = getResponse(u, page, false); // make a request
+//      Response response = getResponse(u, page, false); // make a request
+      
+      String redirectStr = JUtil.getValueByNameSpace(conf, "redirect.allow");
+      boolean redirect = false;
+      if(StringUtils.isNotBlank(redirectStr)){
+    	  redirect = Boolean.parseBoolean(redirectStr);
+      }
+      Response response = getResponse(u, page, redirect); // make a request
       int elapsedTime = (int) (System.currentTimeMillis() - startTime);
 
       if (this.responseTime) {
@@ -443,10 +453,12 @@ public abstract class HttpBase implements Protocol {
         http.timeout = Integer.parseInt(args[++i]) * 1000;
       } else if (args[i].equals("-verbose")) { // found -verbose option
         verbose = true;
+      }else if (args[i].equals(JabongKey.NAMESPACE)) { // found -namespace option
+          i++;
       } else if (i != args.length - 1) {
         System.err.println(usage);
         System.exit(-1);
-      } else
+      }  else
         // root is required parameter
         url = args[i];
     }

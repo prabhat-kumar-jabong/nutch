@@ -217,6 +217,7 @@ public final class URLNormalizers {
   @SuppressWarnings("unchecked")
   private List<Extension> getExtensions(String scope) {
     ObjectCache objectCache = ObjectCache.get(conf);
+
     List<Extension> extensions = (List<Extension>) objectCache
         .getObject(URLNormalizer.X_POINT_ID + "_x_" + scope);
 

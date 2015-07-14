@@ -34,6 +34,8 @@ import org.apache.hadoop.util.ToolRunner;
 import org.apache.nutch.crawl.GeneratorJob;
 import org.apache.nutch.crawl.SignatureFactory;
 import org.apache.nutch.crawl.URLWebPage;
+import org.apache.nutch.jabong.JUtil;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.HttpHeaders;
 import org.apache.nutch.metadata.Nutch;
 import org.apache.nutch.storage.Mark;
@@ -51,6 +53,7 @@ import org.apache.nutch.util.ToolUtil;
 import org.apache.gora.filter.FilterOp;
 import org.apache.gora.filter.SingleFieldValueFilter;
 import org.apache.gora.mapreduce.GoraMapper;
+
 
 public class ParserJob extends NutchTool implements Tool {
 
@@ -324,7 +327,20 @@ public class ParserJob extends NutchTool implements Tool {
         getConf().set(Nutch.CRAWL_ID_KEY, args[++i]);
       } else if ("-all".equals(args[i])) {
         batchId = args[i];
-      } else {
+      } else if("-namespace".equals(args[i])){
+	  	  getConf().set(JabongKey.NAMESPACE, args[i + 1]);
+	        i++;
+	  }else if("-type".equals(args[i])){
+    	  String type =  args[i + 1];
+    	  if(JUtil.isValidType(type)){
+	    	  getConf().set(JabongKey.TYPE, type);
+	          i++;
+    	  }else{
+    		  System.err.println("Unrecognized value of " + args[i]+" "+type); 
+    		  return -1;
+    	  }
+      }
+      else {
         if (batchId != null) {
           System.err.println("BatchId already set to '" + batchId + "'!");
           return -1;

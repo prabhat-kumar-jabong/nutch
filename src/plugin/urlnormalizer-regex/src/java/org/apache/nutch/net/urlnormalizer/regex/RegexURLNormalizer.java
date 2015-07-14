@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
+import org.apache.nutch.jabong.JUtil;
 import org.apache.nutch.net.URLNormalizer;
 import org.apache.nutch.net.URLNormalizers;
 import org.apache.nutch.util.NutchConfiguration;
@@ -46,6 +47,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
+
 
 /**
  * Allows users to do regex substitutions on all/any URLs that are encountered,
@@ -117,14 +119,17 @@ public class RegexURLNormalizer extends Configured implements URLNormalizer {
       defaultRules = rules;
     }
   }
+  
+  
+  
 
   public void setConf(Configuration conf) {
     super.setConf(conf);
     if (conf == null)
       return;
     // the default constructor was called
-
-    String filename = getConf().get("urlnormalizer.regex.file");
+    
+    String filename = JUtil.getValueByNameSpace(getConf(),"urlnormalizer.regex.file");
     String stringRules = getConf().get("urlnormalizer.regex.rules");
     Reader reader = null;
     if (stringRules != null) {

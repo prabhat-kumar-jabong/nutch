@@ -30,6 +30,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.util.StringUtils;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.apache.nutch.jabong.JUtil;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Nutch;
 import org.apache.nutch.net.URLFilters;
 import org.apache.nutch.net.URLNormalizers;
@@ -41,6 +43,7 @@ import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -265,7 +268,19 @@ public class InjectorJob extends NutchTool implements Tool {
       if ("-crawlId".equals(args[i])) {
         getConf().set(Nutch.CRAWL_ID_KEY, args[i + 1]);
         i++;
-      } else {
+      }else if("-namespace".equals(args[i])){
+    	  getConf().set(JabongKey.NAMESPACE, args[i + 1]);
+          i++;
+      }else if("-type".equals(args[i])){
+    	  String type =  args[i + 1];
+    	  if(JUtil.isValidType(type)){
+	    	  getConf().set(JabongKey.TYPE, type);
+	          i++;
+    	  }else{
+    		  System.err.println("Unrecognized value of " + args[i]+" "+type); 
+    		  return -1;
+    	  }
+      }else {
         System.err.println("Unrecognized arg " + args[i]);
         return -1;
       }
