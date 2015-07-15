@@ -59,4 +59,8 @@
 <extension-point
       id="org.apache.nutch.indexer.IndexWriter"
       name="Nutch Index Writer"/>
+<extension-point
+      id="org.apache.nutch.namespace.ContentParser"
+      name="Name specific parser"/>
+      
 </plugin>

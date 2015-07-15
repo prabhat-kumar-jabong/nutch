@@ -30,29 +30,22 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.avro.util.Utf8;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.html.dom.HTMLDocumentImpl;
+import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.metadata.Nutch;
+import org.apache.nutch.namespace.ContentParserUtil;
+import org.apache.nutch.namespace.ParsedEntity;
 import org.apache.nutch.parse.HTMLMetaTags;
-import org.apache.nutch.parse.ParseFilters;
 import org.apache.nutch.parse.Outlink;
 import org.apache.nutch.parse.Parse;
+import org.apache.nutch.parse.ParseFilters;
 import org.apache.nutch.parse.ParseStatusCodes;
 import org.apache.nutch.parse.ParseStatusUtils;
 import org.apache.nutch.parse.Parser;
@@ -63,10 +56,10 @@ import org.apache.nutch.util.EncodingDetector;
 import org.apache.nutch.util.NutchConfiguration;
 import org.apache.nutch.util.TableUtil;
 import org.cyberneko.html.parsers.DOMFragmentParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentFragment;
-import org.w3c.dom.NodeList;
-import org.w3c.tidy.Tidy;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -171,6 +164,8 @@ public class HtmlParser implements Parser {
   private ParseFilters htmlParseFilters;
 
   private String cachingPolicy;
+  
+  private ContentParserUtil parserUtil;
 
   public Parse getParse(String url, WebPage page) {
     HTMLMetaTags metaTags = new HTMLMetaTags();
@@ -209,6 +204,10 @@ public class HtmlParser implements Parser {
       if (LOG.isTraceEnabled()) {
         LOG.trace("Parsing...");
       }
+      
+      ParsedEntity pe =  parserUtil.parse(input);
+      
+      System.out.println(pe);
       
 //      			XPath xPath = XPathFactory.newInstance().newXPath();
 //				String xpathExpression = "//*[@id=\"wayfinding-breadcrumbs_feature_div\"]/ul/li[7]/span/a";
@@ -373,6 +372,7 @@ public class HtmlParser implements Parser {
   public void setConf(Configuration conf) {
     this.conf = conf;
     this.htmlParseFilters = new ParseFilters(getConf());
+    this.parserUtil = new ContentParserUtil(conf);
     this.parserImpl = getConf().get("parser.html.impl", "neko");
     this.defaultCharEncoding = getConf().get(
         "parser.character.encoding.default", "windows-1252");
@@ -399,6 +399,12 @@ public class HtmlParser implements Parser {
     DataInputStream in = new DataInputStream(new FileInputStream(file));
     in.readFully(bytes);
     Configuration conf = NutchConfiguration.create();
+    if(args.length==1){
+    	System.err.println("Missing namespace value");
+    	System.exit(-1);
+    }
+    conf.set(JabongKey.NAMESPACE, args[1]);
+    
     conf.set("plugin.folders", "/Users/jade/workspace/jabonglabs/nutch/build/plugins");
     HtmlParser parser = new HtmlParser();
     parser.setConf(conf);

@@ -9,3 +9,5 @@ logs/
 .project
 .DS_Store
 *.jar
+.settings
+hadoop.log

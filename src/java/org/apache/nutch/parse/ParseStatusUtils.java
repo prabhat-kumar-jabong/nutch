@@ -16,15 +16,14 @@
  ******************************************************************************/
 package org.apache.nutch.parse;
 
-import org.apache.avro.generic.GenericArray;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.avro.util.Utf8;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.util.TableUtil;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 
 public class ParseStatusUtils {
 
