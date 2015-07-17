@@ -263,7 +263,7 @@ public class GeneratorJob extends NutchTool implements Tool {
   public int run(String[] args) throws Exception {
     if (args.length <= 0) {
       System.out
-          .println("Usage: GeneratorJob [-topN N] [-crawlId id] [-noFilter] [-noNorm] [-adddays numDays]");
+          .println("Usage: GeneratorJob [-topN N] [-crawlId id] [-noFilter] [-noNorm] [-adddays numDays] [-rerun columnName columnValue]");
       System.out
           .println("    -topN <N>      - number of top URLs to be selected, default is Long.MAX_VALUE ");
       System.out
@@ -277,7 +277,7 @@ public class GeneratorJob extends NutchTool implements Tool {
       System.out
           .println("                     fetched sooner then db.fetch.interval.default. Default value is 0.");
       System.out.println("    -batchId       - the batch id ");
-      System.out.println("    -rerun       - the batch id ");
+      System.out.println("    -rerun <columnName> <columnValue>   - the column name and value which decide the URLs that need to be rerun");
       System.out.println("----------------------");
       System.out.println("Please set the params.");
       return -1;
