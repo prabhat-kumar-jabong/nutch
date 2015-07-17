@@ -46,13 +46,23 @@ public class GeneratorMapper extends
   private long curTime;
   private SelectorEntry entry = new SelectorEntry();
   private int maxDistance;
+  private String rerunConditionColumnName;
+  private String rerunConditionColumnValue;
 
   @Override
   public void map(String reversedUrl, WebPage page, Context context)
       throws IOException, InterruptedException {
     String url = TableUtil.unreverseUrl(reversedUrl);
 
-    if (Mark.GENERATE_MARK.checkMark(page) != null) {
+    if (rerunConditionColumnName != null
+        && rerunConditionColumnValue != null
+        && page.get(WebPage.Field.valueOf(rerunConditionColumnName).ordinal()) != null
+        && page.get(WebPage.Field.valueOf(rerunConditionColumnName).ordinal())
+            .toString().equals(rerunConditionColumnValue)) {
+
+      GeneratorJob.LOG.debug("PDP Run in progress");
+
+    } else if (Mark.GENERATE_MARK.checkMark(page) != null) {
       GeneratorJob.LOG.debug("Skipping {}; already generated", url);
       return;
     }
@@ -121,5 +131,7 @@ public class GeneratorMapper extends
         System.currentTimeMillis());
     schedule = FetchScheduleFactory.getFetchSchedule(conf);
     scoringFilters = new ScoringFilters(conf);
+    rerunConditionColumnName = conf.get(GeneratorJob.RERUN_CONDITION_COLUMN_NAME, null);
+    rerunConditionColumnValue = conf.get(GeneratorJob.RERUN_CONDITION_COLUMN_VALUE, null);
   }
 }

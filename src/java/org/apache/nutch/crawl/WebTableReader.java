@@ -396,6 +396,10 @@ public class WebTableReader extends NutchTool implements Tool {
     if (batchId != null) {
       sb.append("batchId:\t" + batchId.toString()).append("\n");
     }
+    CharSequence pageType = page.getPageType();
+    if (pageType != null) {
+      sb.append("pageType:\t" + pageType.toString()).append("\n");
+    }
     Map<CharSequence, ByteBuffer> metadata = page.getMetadata();
     if (metadata != null) {
       Iterator<Entry<CharSequence, ByteBuffer>> iterator = metadata.entrySet()

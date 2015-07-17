@@ -65,6 +65,8 @@ public class GeneratorJob extends NutchTool implements Tool {
   public static final String GENERATOR_RANDOM_SEED = "generate.partition.seed";
   public static final String BATCH_ID = "generate.batch.id";
   public static final String GENERATE_COUNT = "generate.count";
+  public static final String RERUN_CONDITION_COLUMN_NAME = "rerun.condition.column.name";
+  public static final String RERUN_CONDITION_COLUMN_VALUE = "rerun.condition.column.value";
 
   private static final Set<WebPage.Field> FIELDS = new HashSet<WebPage.Field>();
 
@@ -163,6 +165,7 @@ public class GeneratorJob extends NutchTool implements Tool {
     Collection<WebPage.Field> fields = new HashSet<WebPage.Field>(FIELDS);
     fields.addAll(FetchScheduleFactory.getFetchSchedule(job.getConfiguration())
         .getFields());
+    fields.add(WebPage.Field.PAGE_TYPE);
     return fields;
   }
 
@@ -274,6 +277,7 @@ public class GeneratorJob extends NutchTool implements Tool {
       System.out
           .println("                     fetched sooner then db.fetch.interval.default. Default value is 0.");
       System.out.println("    -batchId       - the batch id ");
+      System.out.println("    -rerun       - the batch id ");
       System.out.println("----------------------");
       System.out.println("Please set the params.");
       return -1;
@@ -314,7 +318,10 @@ public class GeneratorJob extends NutchTool implements Tool {
         curTime += numDays * 1000L * 60 * 60 * 24;
       } else if ("-batchId".equals(args[i]))
         getConf().set(BATCH_ID, args[++i]);
-      else {
+      else if ("-rerun".equals(args[i])) {
+        getConf().set(RERUN_CONDITION_COLUMN_NAME, args[++i]);
+        getConf().set(RERUN_CONDITION_COLUMN_VALUE, args[++i]);
+      } else {
         System.err.println("Unrecognized arg " + args[i]);
         return -1;
       }
