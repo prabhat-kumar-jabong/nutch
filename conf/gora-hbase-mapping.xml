@@ -66,6 +66,7 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="modifiedTime" family="f" qualifier="mod"/>
         <field name="prevModifiedTime" family="f" qualifier="pmod"/>
         <field name="batchId" family="f" qualifier="bid"/>
+        <field name="pageType" family="f" qualifier="pt"/>
 
         <!-- parse fields                                       -->
         <field name="title" family="p" qualifier="t"/>
