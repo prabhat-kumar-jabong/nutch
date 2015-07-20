@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.example.org/page/" targetNamespace="http://www.example.org/page/">
+    <element name="Page" type="tns:Page"></element>
+    
+
+    <complexType name="Page">
+    	<sequence>
+    		<element name="Type" type="tns:Type" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Type">
+    	<sequence>
+    		<element name="Readers" type="tns:Readers" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    	</sequence>
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="xpath" type="string" use="required"></attribute>
+    	<attribute name="key" type="string" use="required"></attribute>
+    </complexType>
+
+    <complexType name="Readers">
+    	<sequence>
+    		<element name="Reader" type="tns:Reader" maxOccurs="unbounded" minOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+
+    <complexType name="Reader">
+    	<attribute name="id" type="string" use="required"></attribute>
+    	<attribute name="xpath" type="string" use="required"></attribute>
+    	<attribute name="key" type="string" use="required"></attribute>
+    </complexType>
+</schema>

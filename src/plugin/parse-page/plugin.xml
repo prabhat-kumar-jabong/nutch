@@ -16,13 +16,13 @@
  limitations under the License.
 -->
 <plugin
-   id="parse-amazon"
-   name="Html Parse Plug-in"
+   id="parse-page"
+   name="Page parser for various competitor Parse Plug-in"
    version="1.0.0"
    provider-name="nutch.org">
 
    <runtime>
-      <library name="parse-amazon.jar">
+      <library name="parse-page.jar">
          <export name="*"/>
       </library>
       <library name="tagsoup-1.2.jar"/>
@@ -33,16 +33,26 @@
       <import plugin="lib-nekohtml"/>
    </requires>
 
-   <extension id="org.apache.nutch.parse.amazon"
-              name="AmazonParser"
-              point="org.apache.nutch.namespace.ContentParser">
+   <extension id="org.apache.nutch.namespace.page.outlinkreader"
+              name="PageOutlinkReader"
+              point="org.apache.nutch.namespace.page.PageReader">
 
-      <implementation id="org.apache.nutch.parser.amazon.AmazonParser"
-                      class="org.apache.nutch.parser.amazon.AmazonParser">
-                      <parameter name="namespace" value="amazon"/>
+      <implementation id="org.apache.nutch.namespace.page.PageOutlinkReader"
+                      class="org.apache.nutch.namespace.page.PageOutlinkReader">
+                      
       </implementation>
 
    </extension>
+   <!--extension id="org.apache.nutch.parse.page"
+              name="PagePDPReader"
+              point="org.apache.nutch.namespace.page.PageReader">
+
+      <implementation id="org.apache.nutch.parse.page.PagePDPReader"
+                      class="org.apache.nutch.parse.page.PagePDPReader">
+                      
+      </implementation>
+
+   </extension-->
    
     
 

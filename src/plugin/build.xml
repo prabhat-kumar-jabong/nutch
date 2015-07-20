@@ -50,6 +50,7 @@
      <ant dir="parse-html" target="deploy"/>
      <ant dir="parse-jabonghtml" target="deploy"/>
      <ant dir="parse-amazon" target="deploy"/>
+     <ant dir="parse-page" target="deploy"/>
      <ant dir="parse-tika" target="deploy"/>
      <ant dir="parse-sitemap" target="deploy"/>
      <ant dir="parse-metatags" target="deploy"/>
@@ -85,6 +86,7 @@
      <ant dir="parse-html" target="test"/>
      <ant dir="parse-jabonghtml" target="test"/>
      <ant dir="parse-amazon" target="test"/>
+     <ant dir="parse-page" target="test"/>
      <ant dir="parse-js" target="test"/>
      <ant dir="parse-metatags" target="test"/>
      <ant dir="index-anchor" target="test"/>
@@ -140,6 +142,7 @@
     <ant dir="parse-html" target="clean"/>
     <ant dir="parse-jabonghtml" target="clean"/>
     <ant dir="parse-amazon" target="clean"/>
+    <ant dir="parse-page" target="clean"/>
     <ant dir="parse-swf" target="clean"/>
     <ant dir="parse-tika" target="clean"/>
     <ant dir="parse-sitemap" target="clean"/>

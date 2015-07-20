@@ -181,6 +181,7 @@
       <packageset dir="${plugins.dir}/parse-html/src/java"/>
       <packageset dir="${plugins.dir}/parse-jabonghtml/src/java"/>
       <packageset dir="${plugins.dir}/parse-amazon/src/java"/>
+      <packageset dir="${plugins.dir}/parse-page/src/java"/>
       <packageset dir="${plugins.dir}/parse-metatags/src/java"/>
       <packageset dir="${plugins.dir}/parse-js/src/java"/>
       <!--packageset dir="${plugins.dir}/parse-swf/src/java"/-->
@@ -615,6 +616,7 @@
       <packageset dir="${plugins.dir}/parse-html/src/java"/>
       <packageset dir="${plugins.dir}/parse-jabonghtml/src/java"/>
       <packageset dir="${plugins.dir}/parse-amazon/src/java"/>
+      <packageset dir="${plugins.dir}/parse-page/src/java"/>
       <packageset dir="${plugins.dir}/parse-js/src/java"/>
       <packageset dir="${plugins.dir}/parse-metatags/src/java"/>
       <!--packageset dir="${plugins.dir}/parse-swf/src/java"/-->
@@ -995,6 +997,8 @@
         <source path="${basedir}/src/plugin/parse-jabonghtml/src/test/" />
         <source path="${basedir}/src/plugin/parse-amazon/src/java/" />
         <source path="${basedir}/src/plugin/parse-amazon/src/test/" />
+        <source path="${basedir}/src/plugin/parse-page/src/java/" />
+        <source path="${basedir}/src/plugin/parse-page/src/test/" />
         <source path="${basedir}/src/plugin/parse-js/src/java/" />
         <source path="${basedir}/src/plugin/parse-js/src/test/" />
         <source path="${basedir}/src/plugin/parse-metatags/src/java/" />

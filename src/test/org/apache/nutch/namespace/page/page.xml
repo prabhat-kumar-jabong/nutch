@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<page>
+  <type id="xyz" key="outlink" xpath="//[@]/div/span/[2]">
+    <Readers>
+      <Reader id="111" key="price" xpath="//div/path/ddde/"/>
+    </Readers>
+  </type>
+   <type id="xyz1" key="outlink" xpath="//[@]/div/span/[2]">
+    <Readers>
+      <Reader id="111" key="color" xpath="//div/path/dcol/"/>
+    </Readers>
+  </type>
+</page>

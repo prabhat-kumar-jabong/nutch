@@ -22,6 +22,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,18 +31,32 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+
 import org.apache.avro.util.Utf8;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.html.dom.HTMLDocumentImpl;
 import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.metadata.Nutch;
-import org.apache.nutch.namespace.ContentParserUtil;
-import org.apache.nutch.namespace.ParsedEntity;
+import org.apache.nutch.namespace.page.Page;
+import org.apache.nutch.namespace.page.PageReader;
+import org.apache.nutch.namespace.page.PageReaderFactory;
+import org.apache.nutch.namespace.page.PageSource;
+import org.apache.nutch.namespace.page.Type;
 import org.apache.nutch.parse.HTMLMetaTags;
 import org.apache.nutch.parse.Outlink;
 import org.apache.nutch.parse.Parse;
@@ -49,11 +64,13 @@ import org.apache.nutch.parse.ParseFilters;
 import org.apache.nutch.parse.ParseStatusCodes;
 import org.apache.nutch.parse.ParseStatusUtils;
 import org.apache.nutch.parse.Parser;
+import org.apache.nutch.plugin.PluginRuntimeException;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.Bytes;
 import org.apache.nutch.util.EncodingDetector;
 import org.apache.nutch.util.NutchConfiguration;
+import org.apache.nutch.util.ObjectCache;
 import org.apache.nutch.util.TableUtil;
 import org.cyberneko.html.parsers.DOMFragmentParser;
 import org.slf4j.Logger;
@@ -65,7 +82,7 @@ import org.xml.sax.SAXException;
 
 public class HtmlParser implements Parser {
   public static final Logger LOG = LoggerFactory
-      .getLogger("org.apache.nutch.parse.html");
+      .getLogger("org.apache.nutch.parse.jabong.html");
 
   // I used 1000 bytes at first, but found that some documents have
   // meta tag well past the first 1000 bytes.
@@ -165,7 +182,8 @@ public class HtmlParser implements Parser {
 
   private String cachingPolicy;
   
-  private ContentParserUtil parserUtil;
+  
+  private PageReaderFactory parserFactory;
 
   public Parse getParse(String url, WebPage page) {
     HTMLMetaTags metaTags = new HTMLMetaTags();
@@ -183,7 +201,7 @@ public class HtmlParser implements Parser {
     Outlink[] outlinks = new Outlink[0];
 
     // parse the content
-    DocumentFragment root;
+    DocumentFragment root = null;
     try {
       ByteBuffer contentInOctets = page.getContent();
       InputSource input = new InputSource(new ByteArrayInputStream(
@@ -205,27 +223,31 @@ public class HtmlParser implements Parser {
         LOG.trace("Parsing...");
       }
       
-      ParsedEntity pe =  parserUtil.parse(input);
       
-      System.out.println(pe);
+      Page _page = getPage(conf);
+      if(_page!=null){
+    	  
+  		List<Type> types = _page.getType();
+  		PageSource ps = new PageSource();
+  		ps.setInput(input.getByteStream());
+  		ps.setUrl(url);
+  		Map<String, Object> outputMap = new HashMap<String, Object>();
+  		
+  		for (Iterator<Type> iterator = types.iterator(); iterator.hasNext();) {
+  			Map<String, String> params = new HashMap<String, String>();
+  			Type type =  iterator.next();
+  			String id = type.getId();
+  			params.put("key", type.getKey());
+  			params.put("xpath", type.getXpath());
+  			
+  			PageReader reader = parserFactory.getReader(id);
+  			reader.read(ps, outputMap, params);
+  		}
+    	  
+      }else{
+    	  root = parse(input);
+      }
       
-//      			XPath xPath = XPathFactory.newInstance().newXPath();
-//				String xpathExpression = "//*[@id=\"wayfinding-breadcrumbs_feature_div\"]/ul/li[7]/span/a";
-//				String nodes =xPath.evaluate(xpathExpression,input);
-//        Tidy tidy = new Tidy();
-//        
-//        org.w3c.dom.Document root1 = tidy.parseDOM(input.getByteStream(), null);;
-//		String xpathExpression = "//*[@id=\"wayfinding-breadcrumbs_feature_div\"]/ul/li[7]/span/a";
-//		XPath xPath = XPathFactory.newInstance().newXPath();
-//		NodeList nodes = (NodeList) xPath.evaluate(xpathExpression,root1.getDocumentElement(), XPathConstants.NODESET);
-//		List<String> valueList = new LinkedList<String>();
-//		for (int i = 0; i < nodes.getLength(); ++i) {
-//			valueList.add(nodes.item(i).getChildNodes().item(0).getNodeValue());
-//			valueList.add(nodes.item(i).getTextContent());
-//		}
-      
-      
-      root = parse(input);
     } catch (IOException e) {
       LOG.error("Failed with the following IOException: ", e);
       return ParseStatusUtils.getEmptyParse(e, getConf());
@@ -293,6 +315,39 @@ public class HtmlParser implements Parser {
 
     return parse;
   }
+  
+  
+  private Page getPage(Configuration conf) throws PluginRuntimeException{
+		ObjectCache cache = ObjectCache.get(conf);
+		
+		String ns = conf.get(JabongKey.NAMESPACE);
+		if(StringUtils.isBlank(ns)){
+			LOG.warn("namespace is not provided this will be treated as normal parsing.");
+			return null;
+		}
+		
+		String key = ns.concat(".page.xml");
+		
+		Page page = (Page)cache.getObject(key);
+		if(page==null){
+			try {
+				
+				InputStream is = conf.getConfResourceAsInputStream(key);
+				JAXBContext jc = JAXBContext.newInstance(Page.class);
+				Unmarshaller ul = jc.createUnmarshaller();
+				JAXBElement<Page> root =  ul.unmarshal(new StreamSource(is),Page.class);
+				page = root.getValue();
+				cache.setObject(key, page);
+				
+			} catch (JAXBException e) {
+				LOG.error("Error while reading "+key, e);
+				page = null;
+			}
+		}
+		
+		return page;
+	}
+  
 
   private DocumentFragment parse(InputSource input) throws Exception {
     if (parserImpl.equalsIgnoreCase("tagsoup"))
@@ -372,7 +427,8 @@ public class HtmlParser implements Parser {
   public void setConf(Configuration conf) {
     this.conf = conf;
     this.htmlParseFilters = new ParseFilters(getConf());
-    this.parserUtil = new ContentParserUtil(conf);
+//    this.parserUtil = new ContentParserUtil(conf);
+    this.parserFactory = new PageReaderFactory(conf);
     this.parserImpl = getConf().get("parser.html.impl", "neko");
     this.defaultCharEncoding = getConf().get(
         "parser.character.encoding.default", "windows-1252");
@@ -380,6 +436,8 @@ public class HtmlParser implements Parser {
     this.cachingPolicy = getConf().get("parser.caching.forbidden.policy",
         Nutch.CACHING_FORBIDDEN_CONTENT);
   }
+  
+  
 
   public Configuration getConf() {
     return this.conf;

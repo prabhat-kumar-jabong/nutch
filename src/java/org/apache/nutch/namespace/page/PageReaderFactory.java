@@ -1,11 +1,8 @@
-package org.apache.nutch.namespace;
+package org.apache.nutch.namespace.page;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.nutch.jabong.JabongKey;
-import org.apache.nutch.namespace.page.PageReader;
 import org.apache.nutch.parse.Parser;
-import org.apache.nutch.parse.ParserFactory;
 import org.apache.nutch.plugin.Extension;
 import org.apache.nutch.plugin.ExtensionPoint;
 import org.apache.nutch.plugin.PluginRepository;
@@ -14,14 +11,14 @@ import org.apache.nutch.util.ObjectCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ContentParserFactory {
-	public static final Logger LOG = LoggerFactory.getLogger(ParserFactory.class);
+public class PageReaderFactory {
+	public static final Logger LOG = LoggerFactory.getLogger(PageReaderFactory.class);
 	
 	private final Configuration conf;
 	private final ExtensionPoint extensionPoint;
 	
 	
-	public ContentParserFactory(Configuration conf) {
+	public PageReaderFactory(Configuration conf) {
 	    this.conf = conf;
 	    this.extensionPoint = PluginRepository.get(conf).getExtensionPoint(
 	    		PageReader.X_POINT_ID);
@@ -31,23 +28,19 @@ public class ContentParserFactory {
 	    
 	  }
 	
-	public ContentParser getParser() throws PluginRuntimeException{
-		String nameSpace  = conf.get(JabongKey.NAMESPACE);
+	public PageReader getReader(String ref) throws PluginRuntimeException{
 		ObjectCache objectCache = ObjectCache.get(conf);
-		
-		if(StringUtils.isBlank(nameSpace)){
-			throw new RuntimeException("NameSpace is not defined.");
+		if(StringUtils.isBlank(ref)){
+			throw new RuntimeException("PluginId is not specified.");
 		}
-		
-		
-		Extension ext = getExtension(nameSpace);
+		Extension ext = getExtension(ref);
 		if(ext == null){
-			throw new PluginRuntimeException("Missing content parser for "+nameSpace);
+			throw new PluginRuntimeException("Missing reader for "+ref);
 		}
 		
-		ContentParser parser =(ContentParser) objectCache.getObject(ext.getId());
+		PageReader parser =(PageReader) objectCache.getObject(ext.getId());
 		if(parser==null){
-			parser =(ContentParser) ext.getExtensionInstance();
+			parser =(PageReader) ext.getExtensionInstance();
 			objectCache.setObject(ext.getId(), parser);
 		}
 		return parser;
@@ -55,16 +48,17 @@ public class ContentParserFactory {
 	}
 	
 	
-	private Extension getExtension(String nameSpace){
+	private Extension getExtension(String ref){
+		String extKey = "extension.".concat(ref);
 		ObjectCache objectCache = ObjectCache.get(conf);
-		Extension ext = (Extension)objectCache.getObject("contentparser."+nameSpace);
+		Extension ext = (Extension)objectCache.getObject(extKey);
 		if(ext == null){
 			Extension extensions[] = this.extensionPoint.getExtensions();
 			for(Extension extension:extensions){
-				String ns = extension.getAttribute("namespace");
-				if(nameSpace.equalsIgnoreCase(ns)){
+				String id = extension.getId();
+				if(id.equals(ref)){
 					ext = extension;
-					objectCache.setObject("contentparser."+nameSpace, ext);
+					objectCache.setObject(extKey, ext);
 					break;
 				}
 			}

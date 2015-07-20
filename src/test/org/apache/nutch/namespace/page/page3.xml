@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Page xmlns:tns="http://www.example.org/page/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/page/ ../../../../../../java/org/apache/nutch/jabong/xml/page.xsd ">
+  <Type id="xyz" xpath="//div/div/[1]/@">
+      <Readers>
+          <Reader id="123" xpath="/div/gid/ter/" key="demo" />
+      </Readers>
+  </Type>
+</Page>

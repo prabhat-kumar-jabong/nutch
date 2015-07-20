@@ -62,5 +62,9 @@
 <extension-point
       id="org.apache.nutch.namespace.ContentParser"
       name="Name specific parser"/>
+
+<extension-point
+      id="org.apache.nutch.namespace.page.PageReader"
+      name="Page specific reader"/>
       
 </plugin>
