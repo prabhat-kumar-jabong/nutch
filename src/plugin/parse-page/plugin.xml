@@ -43,17 +43,26 @@
       </implementation>
 
    </extension>
-   <!--extension id="org.apache.nutch.parse.page"
+   <extension id="org.apache.nutch.namespace.page.pdpreader"
               name="PagePDPReader"
               point="org.apache.nutch.namespace.page.PageReader">
 
-      <implementation id="org.apache.nutch.parse.page.PagePDPReader"
-                      class="org.apache.nutch.parse.page.PagePDPReader">
+      <implementation id="org.apache.nutch.namespace.page.PagePDPReader"
+                      class="org.apache.nutch.namespace.page.PagePDPReader">
                       
       </implementation>
 
-   </extension-->
-   
+   </extension>
+   <extension id="org.apache.nutch.namespace.page.nodereader"
+              name="PageNodeTextReader"
+              point="org.apache.nutch.namespace.page.PageReader">
+
+      <implementation id="org.apache.nutch.namespace.page.PageNodeTextReader"
+                      class="org.apache.nutch.namespace.page.PageNodeTextReader">
+                      
+      </implementation>
+
+   </extension>
     
 
 </plugin>

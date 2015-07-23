@@ -10,4 +10,5 @@ logs/
 .DS_Store
 *.jar
 .settings
+conf/jtidy-r938-sources.zip
 hadoop.log

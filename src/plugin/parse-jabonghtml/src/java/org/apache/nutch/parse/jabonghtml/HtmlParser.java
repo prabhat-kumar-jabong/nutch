@@ -17,12 +17,12 @@
 
 package org.apache.nutch.parse.jabonghtml;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,6 +49,7 @@ import org.apache.avro.util.Utf8;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.html.dom.HTMLDocumentImpl;
+import org.apache.nutch.jabong.JUtil;
 import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.metadata.Nutch;
@@ -64,6 +65,7 @@ import org.apache.nutch.parse.ParseFilters;
 import org.apache.nutch.parse.ParseStatusCodes;
 import org.apache.nutch.parse.ParseStatusUtils;
 import org.apache.nutch.parse.Parser;
+import org.apache.nutch.parse.jabonghtml.clean.HTMLCleaner;
 import org.apache.nutch.plugin.PluginRuntimeException;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.storage.WebPage;
@@ -106,6 +108,8 @@ public class HtmlParser implements Parser {
   }
 
   private String parserImpl;
+  
+  private HTMLCleaner cleanerMgr = new HTMLCleaner();
 
   /**
    * Given a <code>ByteBuffer</code> representing an html file of an
@@ -204,9 +208,9 @@ public class HtmlParser implements Parser {
     DocumentFragment root = null;
     try {
       ByteBuffer contentInOctets = page.getContent();
-      InputSource input = new InputSource(new ByteArrayInputStream(
-          contentInOctets.array(), contentInOctets.arrayOffset()
-              + contentInOctets.position(), contentInOctets.remaining()));
+      
+      byte[] b = new byte[contentInOctets.remaining()];
+      contentInOctets.get(b);
 
       EncodingDetector detector = new EncodingDetector(conf);
       detector.autoDetectClues(page, true);
@@ -218,18 +222,24 @@ public class HtmlParser implements Parser {
       page.getMetadata().put(new Utf8(Metadata.CHAR_ENCODING_FOR_CONVERSION),
           ByteBuffer.wrap(Bytes.toBytes(encoding)));
 
-      input.setEncoding(encoding);
       if (LOG.isTraceEnabled()) {
         LOG.trace("Parsing...");
       }
       
       
-      Page _page = getPage(conf);
+      String cleanContent = cleanerMgr.clean(new String(b,encoding));
+      if (LOG.isTraceEnabled()) {
+    	        LOG.trace("======================= clean content ===================");
+          LOG.trace(cleanContent);
+        }
+      
+      Page _page = JUtil.getPage(conf);
+      
       if(_page!=null){
-    	  
-  		List<Type> types = _page.getType();
+
+    	List<Type> types = _page.getType();
   		PageSource ps = new PageSource();
-  		ps.setInput(input.getByteStream());
+  		ps.setContent(cleanContent);
   		ps.setUrl(url);
   		Map<String, Object> outputMap = new HashMap<String, Object>();
   		
@@ -239,25 +249,28 @@ public class HtmlParser implements Parser {
   			String id = type.getId();
   			params.put("key", type.getKey());
   			params.put("xpath", type.getXpath());
-  			
   			PageReader reader = parserFactory.getReader(id);
   			reader.read(ps, outputMap, params);
   		}
     	  
       }else{
-    	  root = parse(input);
+    	  root = parse(null);
       }
       
     } catch (IOException e) {
+    	e.printStackTrace();
       LOG.error("Failed with the following IOException: ", e);
       return ParseStatusUtils.getEmptyParse(e, getConf());
     } catch (DOMException e) {
+    	e.printStackTrace();
       LOG.error("Failed with the following DOMException: ", e);
       return ParseStatusUtils.getEmptyParse(e, getConf());
     } catch (SAXException e) {
+    	e.printStackTrace();
       LOG.error("Failed with the following SAXException: ", e);
       return ParseStatusUtils.getEmptyParse(e, getConf());
     } catch (Exception e) {
+    	e.printStackTrace();
       LOG.error("Failed with the following Exception: ", e);
       return ParseStatusUtils.getEmptyParse(e, getConf());
     }
@@ -316,37 +329,6 @@ public class HtmlParser implements Parser {
     return parse;
   }
   
-  
-  private Page getPage(Configuration conf) throws PluginRuntimeException{
-		ObjectCache cache = ObjectCache.get(conf);
-		
-		String ns = conf.get(JabongKey.NAMESPACE);
-		if(StringUtils.isBlank(ns)){
-			LOG.warn("namespace is not provided this will be treated as normal parsing.");
-			return null;
-		}
-		
-		String key = ns.concat(".page.xml");
-		
-		Page page = (Page)cache.getObject(key);
-		if(page==null){
-			try {
-				
-				InputStream is = conf.getConfResourceAsInputStream(key);
-				JAXBContext jc = JAXBContext.newInstance(Page.class);
-				Unmarshaller ul = jc.createUnmarshaller();
-				JAXBElement<Page> root =  ul.unmarshal(new StreamSource(is),Page.class);
-				page = root.getValue();
-				cache.setObject(key, page);
-				
-			} catch (JAXBException e) {
-				LOG.error("Error while reading "+key, e);
-				page = null;
-			}
-		}
-		
-		return page;
-	}
   
 
   private DocumentFragment parse(InputSource input) throws Exception {
@@ -456,11 +438,15 @@ public class HtmlParser implements Parser {
     byte[] bytes = new byte[(int) file.length()];
     DataInputStream in = new DataInputStream(new FileInputStream(file));
     in.readFully(bytes);
+    
     Configuration conf = NutchConfiguration.create();
     if(args.length==1){
     	System.err.println("Missing namespace value");
     	System.exit(-1);
     }
+    
+    in.close();
+    
     conf.set(JabongKey.NAMESPACE, args[1]);
     
     conf.set("plugin.folders", "/Users/jade/workspace/jabonglabs/nutch/build/plugins");

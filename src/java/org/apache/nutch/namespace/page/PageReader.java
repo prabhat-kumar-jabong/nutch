@@ -1,5 +1,6 @@
 package org.apache.nutch.namespace.page;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.apache.hadoop.conf.Configurable;
@@ -12,6 +13,6 @@ public interface PageReader extends Pluggable, Configurable {
 	  public final static String X_POINT_ID = PageReader.class.getName();
 
 	void read(PageSource source, Map<String, Object> outputMap,
-			Map<String, String> params) throws PluginRuntimeException;
+			Map<String, String> params) throws PluginRuntimeException, IOException;
 	
 }

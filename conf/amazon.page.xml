@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Page xmlns:tns="http://www.example.org/page/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/page/ ../../../../../../java/org/apache/nutch/jabong/xml/page.xsd ">
-  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id='FGContainer_32e19abc8a8832790e88790758f277fc']/div/div[2]/ul/li/div/a">
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id=&quot;FGContainer_32e19abc8a8832790e88790758f277fc&quot;]/div/div[2]/ul/li/div/a">
       <!-- Readers>
           <Reader id="123" xpath="/div/gid/ter/" key="demo" />
       </Readers -->
+  </Type>
+  <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id=&quot;ppd&quot;]">
+      <Readers>
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;brand&quot;]/text()" key="brand" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;productTitle&quot;]/text()" key="title" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;price&quot;]/table/tbody/tr[1]/td[2]/text()" key="mrp" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;priceblock_saleprice&quot;]/text()" key="sp" />
+      </Readers>
   </Type>
 </Page>
