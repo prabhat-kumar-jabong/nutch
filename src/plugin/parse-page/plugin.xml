@@ -61,6 +61,10 @@
                       class="org.apache.nutch.namespace.page.PageNodeTextReader">
                       
       </implementation>
+      <implementation id="org.apache.nutch.namespace.page.PageNodeListReader"
+                      class="org.apache.nutch.namespace.page.PageNodeListReader">
+                      
+      </implementation>
 
    </extension>
     

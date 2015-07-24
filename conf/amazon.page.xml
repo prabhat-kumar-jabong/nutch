@@ -8,6 +8,7 @@
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;productTitle&quot;]/text()" key="title" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;price&quot;]/table/tbody/tr[1]/td[2]/text()" key="mrp" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;priceblock_saleprice&quot;]/text()" key="sp" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name=&quot;dropdown_selected_size_name&quot;]/option/text()" key="size" />          
       </Readers>
   </Type>
   <Type id="org.apache.nutch.namespace.page.PageNodeTextReader" key="title" xpath="/html/head/title/text()">
