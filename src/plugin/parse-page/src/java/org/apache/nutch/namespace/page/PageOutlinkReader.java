@@ -37,12 +37,17 @@ public class PageOutlinkReader extends AbstractPageReader{
 	        
 			NodeList nodes = (NodeList) xPathExpression.evaluate(root, XPathConstants.NODESET);
 			
-		    List<String> valueList = new LinkedList<String>();
+			List<String> valueList = (List<String>) outputMap.get("outlinks");
+			if(valueList==null){
+				valueList = new LinkedList<String>();
+			}
+			
 			for (int i = 0; i < nodes.getLength(); ++i) {
 				NamedNodeMap nnm = nodes.item(i).getAttributes();
 				Node node = nnm.getNamedItem("href");
 				valueList.add(node.getNodeValue());
 			}
+			
 			
 			outputMap.put(key, valueList);
 			

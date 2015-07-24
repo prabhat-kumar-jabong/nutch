@@ -17,6 +17,7 @@
 
 package org.apache.nutch.parse.jabonghtml;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,6 +75,7 @@ import org.apache.nutch.util.EncodingDetector;
 import org.apache.nutch.util.NutchConfiguration;
 import org.apache.nutch.util.ObjectCache;
 import org.apache.nutch.util.TableUtil;
+import org.apache.nutch.util.URLUtil;
 import org.cyberneko.html.parsers.DOMFragmentParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +83,8 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.DocumentFragment;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import com.google.gson.Gson;
 
 public class HtmlParser implements Parser {
   public static final Logger LOG = LoggerFactory
@@ -211,6 +215,11 @@ public class HtmlParser implements Parser {
       
       byte[] b = new byte[contentInOctets.remaining()];
       contentInOctets.get(b);
+      
+      contentInOctets.flip();
+      InputSource input = new InputSource(new ByteArrayInputStream(
+              contentInOctets.array(), contentInOctets.arrayOffset()
+                  + contentInOctets.position(), contentInOctets.remaining()));
 
       EncodingDetector detector = new EncodingDetector(conf);
       detector.autoDetectClues(page, true);
@@ -234,14 +243,14 @@ public class HtmlParser implements Parser {
         }
       
       Page _page = JUtil.getPage(conf);
-      
+      Map<String, Object> outputMap = new HashMap<String, Object>();
       if(_page!=null){
 
     	List<Type> types = _page.getType();
   		PageSource ps = new PageSource();
   		ps.setContent(cleanContent);
   		ps.setUrl(url);
-  		Map<String, Object> outputMap = new HashMap<String, Object>();
+  		
   		
   		for (Iterator<Type> iterator = types.iterator(); iterator.hasNext();) {
   			Map<String, String> params = new HashMap<String, String>();
@@ -252,10 +261,32 @@ public class HtmlParser implements Parser {
   			PageReader reader = parserFactory.getReader(id);
   			reader.read(ps, outputMap, params);
   		}
-    	  
-      }else{
-    	  root = parse(null);
+  		
+  		List<String> olList = (List<String>) outputMap.get("outlinks");
+  		if(olList!=null){
+  			ArrayList<Outlink> ola = new ArrayList<Outlink>(olList.size());
+  			for (Iterator<String> iterator = olList.iterator(); iterator.hasNext();) {
+				String target =  iterator.next();
+				try{
+				URL olurl = URLUtil.resolveURL(base, target);
+				ola.add(new Outlink(olurl.toString(), target));
+				}catch(MalformedURLException e){
+					
+				}
+			}
+  			
+  			outlinks = ola.toArray(new Outlink[ola.size()]);
+  		}
+  		
+  		Map<String, Object> pdp = (Map<String, Object>)outputMap.get("pdp");
+    	if(pdp!=null){
+    		text = new Gson().toJson(pdp);
+    	}
+    	
+    	title = (String)outputMap.get("title");
       }
+      
+      root = parse(input);
       
     } catch (IOException e) {
     	e.printStackTrace();
@@ -281,33 +312,33 @@ public class HtmlParser implements Parser {
       LOG.trace("Meta tags for " + base + ": " + metaTags.toString());
     }
     // check meta directives
-    if (!metaTags.getNoIndex()) { // okay to index
-      StringBuilder sb = new StringBuilder();
-      if (LOG.isTraceEnabled()) {
-        LOG.trace("Getting text...");
-      }
-      utils.getText(sb, root); // extract text
-      text = sb.toString();
-      sb.setLength(0);
-      if (LOG.isTraceEnabled()) {
-        LOG.trace("Getting title...");
-      }
-      utils.getTitle(sb, root); // extract title
-      title = sb.toString().trim();
-    }
+//    if (!metaTags.getNoIndex()) { // okay to index
+//      StringBuilder sb = new StringBuilder();
+//      if (LOG.isTraceEnabled()) {
+//        LOG.trace("Getting text...");
+//      }
+//      utils.getText(sb, root); // extract text
+//      text = sb.toString();
+//      sb.setLength(0);
+//      if (LOG.isTraceEnabled()) {
+//        LOG.trace("Getting title...");
+//      }
+//      utils.getTitle(sb, root); // extract title
+//      title = sb.toString().trim();
+//    }
 
-    if (!metaTags.getNoFollow()) { // okay to follow links
-      ArrayList<Outlink> l = new ArrayList<Outlink>(); // extract outlinks
-      URL baseTag = utils.getBase(root);
-      if (LOG.isTraceEnabled()) {
-        LOG.trace("Getting links...");
-      }
-      utils.getOutlinks(baseTag != null ? baseTag : base, l, root);
-      outlinks = l.toArray(new Outlink[l.size()]);
-      if (LOG.isTraceEnabled()) {
-        LOG.trace("found " + outlinks.length + " outlinks in " + url);
-      }
-    }
+//    if (!metaTags.getNoFollow()) { // okay to follow links
+//      ArrayList<Outlink> l = new ArrayList<Outlink>(); // extract outlinks
+//      URL baseTag = utils.getBase(root);
+//      if (LOG.isTraceEnabled()) {
+//        LOG.trace("Getting links...");
+//      }
+//      utils.getOutlinks(baseTag != null ? baseTag : base, l, root);
+//      outlinks = l.toArray(new Outlink[l.size()]);
+//      if (LOG.isTraceEnabled()) {
+//        LOG.trace("found " + outlinks.length + " outlinks in " + url);
+//      }
+//    }
 
     ParseStatus status = ParseStatus.newBuilder().build();
     status.setMajorCode((int) ParseStatusCodes.SUCCESS);
