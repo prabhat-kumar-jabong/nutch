@@ -40,9 +40,7 @@ public class PageNodeListReader extends AbstractPageReader{
 					items.add(node.getNodeValue());									
 				}				
 				outputMap.put(key, items);
-			}
-	        
-	        int i =0;
+			}	        
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 			LOG.warn("Error while parsing content for source "+source.getUrl());
