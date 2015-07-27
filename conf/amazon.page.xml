@@ -11,11 +11,6 @@
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name=&quot;dropdown_selected_size_name&quot;]/option/text()" key="size" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb" />
-          
-          
-          
-          
-                    
       </Readers>
   </Type>
   <Type id="org.apache.nutch.namespace.page.PageNodeTextReader" key="title" xpath="/html/head/title/text()">

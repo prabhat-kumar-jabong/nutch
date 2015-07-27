@@ -24,15 +24,16 @@
 
   <!--  by default if the mimeType is set to *, or 
         if it can't be determined, use parse-tika -->
-	<mimeType name="*">
-	  <plugin id="parse-tika" />
-	</mimeType>
+	
 
 	<!--mimeType name="text/html">
 		<plugin id="parse-html" />
 	</mimeType-->
 	<mimeType name="text/html">
 		<plugin id="parse-jabonghtml" />
+	</mimeType>
+	<mimeType name="*">
+	  <plugin id="parse-tika" />
 	</mimeType>
 	<mimeType name="application/xml">
 		<plugin id="parse-sitemap" />
