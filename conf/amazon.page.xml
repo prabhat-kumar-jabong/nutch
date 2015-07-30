@@ -4,13 +4,13 @@
   </Type>
   <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='ppd']">
       <Readers>
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" onParseSuccess=""/>
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='productTitle']/text()" key="title"  onParseSuccess=""/>
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']/table/tbody/tr[1]/td[2]/text()" key="mrp"  onParseSuccess=""/>      
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size" onParseSuccess="" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images" onParseSuccess="" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb" onParseSuccess="" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" onParseSuccess=""/>                  
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='productTitle']/text()" key="title"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']/table/tbody/tr[1]/td[2]/text()" key="mrp"  />      
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />                  
       </Readers>
   </Type>
   <Type id="org.apache.nutch.namespace.page.PageNodeTextReader" key="title" xpath="/html/head/title/text()">
