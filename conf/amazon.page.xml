@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Page xmlns:tns="http://www.example.org/page/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/page/ ../../../../../../java/org/apache/nutch/jabong/xml/page.xsd ">
-  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id=&quot;FGContainer_32e19abc8a8832790e88790758f277fc&quot;]/div/div[2]/ul/li/div/a">
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="(//div[contains(@id,'FGContainer_')])[1]/div/div[2]/ul/li/div/a">
   </Type>
-  <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id=&quot;ppd&quot;]">
+  <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='ppd']">
       <Readers>
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;brand&quot;]/text()" key="brand" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;productTitle&quot;]/text()" key="title" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id=&quot;price&quot;]/table/tbody/tr[1]/td[2]/text()" key="mrp" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name=&quot;dropdown_selected_size_name&quot;]/option/text()" key="size" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb" />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />                  
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" onParseSuccess=""/>
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='productTitle']/text()" key="title"  onParseSuccess=""/>
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']/table/tbody/tr[1]/td[2]/text()" key="mrp"  onParseSuccess=""/>      
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size" onParseSuccess="" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images" onParseSuccess="" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb" onParseSuccess="" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" onParseSuccess=""/>                  
       </Readers>
   </Type>
   <Type id="org.apache.nutch.namespace.page.PageNodeTextReader" key="title" xpath="/html/head/title/text()">
   </Type>
   <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[contains(@id,'result_')]/div/a">
   </Type>
-  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id=&quot;pagnNextLink&quot;]">
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id='pagnNextLink']">
   </Type>
 </Page>
