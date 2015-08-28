@@ -22,16 +22,42 @@ public class Parse {
   private String title;
   private Outlink[] outlinks;
   private org.apache.nutch.storage.ParseStatus parseStatus;
+  private String productTitle;
+  private String sellingPrice;
+  private String breadcrumb;
+  private String images;
+  private String brand;
+  private String size;
+  private boolean pdp;
+  private Integer mapped;
 
   public Parse() {
   }
-
+  
   public Parse(String text, String title, Outlink[] outlinks,
       org.apache.nutch.storage.ParseStatus parseStatus) {
     this.text = text;
     this.title = title;
     this.outlinks = outlinks;
     this.parseStatus = parseStatus;
+  }
+
+  public Parse(String text, String title, Outlink[] outlinks,
+      org.apache.nutch.storage.ParseStatus parseStatus, String productTitle,
+      String sellingPrice, String breadcrumb, String images, String brand,
+      String size, boolean pdp, Integer mapped) {
+    this.text = text;
+    this.title = title;
+    this.outlinks = outlinks;
+    this.parseStatus = parseStatus;
+    this.productTitle = productTitle;
+    this.sellingPrice = sellingPrice;
+    this.breadcrumb = breadcrumb;
+    this.images = images;
+    this.brand = brand;
+    this.size = size;
+    this.pdp = pdp;
+    this.mapped = mapped;
   }
 
   public String getText() {
@@ -64,5 +90,69 @@ public class Parse {
 
   public void setParseStatus(org.apache.nutch.storage.ParseStatus parseStatus) {
     this.parseStatus = parseStatus;
+  }
+  
+  public String getProductTitle() {
+    return productTitle;
+  }
+
+  public void setProductTitle(String productTitle) {
+    this.productTitle = productTitle;
+  }
+
+  public String getSellingPrice() {
+    return sellingPrice;
+  }
+
+  public void setSellingPrice(String sellingPrice) {
+    this.sellingPrice = sellingPrice;
+  }
+
+  public String getBreadcrumb() {
+    return breadcrumb;
+  }
+
+  public void setBreadcrumb(String breadcrumb) {
+    this.breadcrumb = breadcrumb;
+  }
+
+  public String getImages() {
+    return images;
+  }
+
+  public void setImages(String images) {
+    this.images = images;
+  }
+
+  public String getBrand() {
+    return brand;
+  }
+
+  public void setBrand(String brand) {
+    this.brand = brand;
+  }
+
+  public String getSize() {
+    return size;
+  }
+
+  public void setSize(String size) {
+    this.size = size;
+  }
+
+  public boolean isPdp() {
+    return pdp;
+  }
+
+  public void setPdp(boolean pdp) {
+    this.pdp = pdp;
+  }
+
+  public Integer getMapped() {
+    return mapped;
+  }
+
+  public void setMapped(Integer mapped) {
+    this.mapped = mapped;
   }
 }

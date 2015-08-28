@@ -234,6 +234,15 @@ public class ParseUtil extends Configured {
       } else {
         page.setText(new Utf8(parse.getText()));
         page.setTitle(new Utf8(parse.getTitle()));
+        page.setProductTitle(new Utf8(parse.getProductTitle()));
+        page.setSellingPrice(new Utf8(parse.getSellingPrice()));
+        page.setBreadcrumb(new Utf8(parse.getBreadcrumb()));
+        page.setImages(new Utf8(parse.getImages()));
+        page.setBrand(new Utf8(parse.getBrand()));
+        page.setSize(new Utf8(parse.getSize()));
+        page.setPDP(new Utf8(String.valueOf(parse.isPdp())));
+        page.setMapped(new Utf8(parse.getMapped().toString()));
+        
         ByteBuffer prevSig = page.getSignature();
         if (prevSig != null) {
           page.setPrevSignature(prevSig);

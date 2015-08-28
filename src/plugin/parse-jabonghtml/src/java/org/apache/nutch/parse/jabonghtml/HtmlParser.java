@@ -22,8 +22,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,14 +38,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.avro.util.Utf8;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.html.dom.HTMLDocumentImpl;
 import org.apache.nutch.jabong.JUtil;
@@ -67,13 +58,12 @@ import org.apache.nutch.parse.ParseStatusCodes;
 import org.apache.nutch.parse.ParseStatusUtils;
 import org.apache.nutch.parse.Parser;
 import org.apache.nutch.parse.jabonghtml.clean.HTMLCleaner;
-import org.apache.nutch.plugin.PluginRuntimeException;
+import org.apache.nutch.storage.PDPMapping;
 import org.apache.nutch.storage.ParseStatus;
 import org.apache.nutch.storage.WebPage;
 import org.apache.nutch.util.Bytes;
 import org.apache.nutch.util.EncodingDetector;
 import org.apache.nutch.util.NutchConfiguration;
-import org.apache.nutch.util.ObjectCache;
 import org.apache.nutch.util.TableUtil;
 import org.apache.nutch.util.URLUtil;
 import org.cyberneko.html.parsers.DOMFragmentParser;
@@ -109,6 +99,8 @@ public class HtmlParser implements Parser {
 
   static {
     FIELDS.add(WebPage.Field.BASE_URL);
+    FIELDS.add(WebPage.Field.PDP);
+    FIELDS.add(WebPage.Field.MAPPED);
   }
 
   private String parserImpl;
@@ -190,7 +182,6 @@ public class HtmlParser implements Parser {
 
   private String cachingPolicy;
   
-  
   private PageReaderFactory parserFactory;
 
   public Parse getParse(String url, WebPage page) {
@@ -206,6 +197,15 @@ public class HtmlParser implements Parser {
 
     String text = "";
     String title = "";
+    String productTitle = "";
+    String sellingPrice = "";
+    String breadcrumb = "";
+    String images = "";
+    String brand = "";
+    String size = "";
+    Boolean isPDP = page.get(WebPage.Field.valueOf("PDP").ordinal()) == null ? false : Boolean.valueOf(page.get(WebPage.Field.valueOf("PDP").ordinal()).toString());
+    Integer mapped = ((page.get(WebPage.Field.valueOf("MAPPED").ordinal()) == null) ? PDPMapping.NEW.getValue() : Integer.valueOf(page.get(WebPage.Field.valueOf("MAPPED").ordinal()).toString()));
+    
     Outlink[] outlinks = new Outlink[0];
 
     // parse the content
@@ -279,9 +279,17 @@ public class HtmlParser implements Parser {
   		}
   		
   		Map<String, Object> pdp = (Map<String, Object>)outputMap.get("pdp");
-    	if(pdp!=null){
-    		text = new Gson().toJson(pdp);
-    	}
+    	if(pdp!=null) {
+        Gson gson = new Gson();
+        text = gson.toJson(pdp);
+        productTitle = (String) pdp.get("title");
+        sellingPrice = (String) pdp.get("sp");
+        breadcrumb = gson.toJson(pdp.get("breadCrumb"));
+        images = gson.toJson(pdp.get("images"));
+        brand = (String) pdp.get("brand");
+        size = gson.toJson(pdp.get("size"));
+        isPDP = true;
+      }
     	
     	title = (String)outputMap.get("title");
       }
@@ -349,7 +357,8 @@ public class HtmlParser implements Parser {
           new Utf8(Integer.toString(metaTags.getRefreshTime())));
     }
 
-    Parse parse = new Parse(text, title, outlinks, status);
+    Parse parse = new Parse(text, title, outlinks, status, productTitle,
+        sellingPrice, breadcrumb, images, brand, size, isPDP, mapped);
     parse = htmlParseFilters.filter(url, page, parse, metaTags, root);
 
     if (metaTags.getNoCache()) { // not okay to cache
