@@ -49,6 +49,7 @@ http://gora.apache.org/current/gora-hbase.html
         <family name="h" maxVersions="1"/>
         <family name="mtdt" maxVersions="1"/>
         <family name="mk" maxVersions="1"/>
+        <family name="j" maxVersions="1"/>
     </table>
     <class table="webpage" keyClass="java.lang.String" name="org.apache.nutch.storage.WebPage">
         
@@ -82,6 +83,16 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="outlinks" family="ol"/>
         <field name="metadata" family="mtdt"/>
         <field name="markers" family="mk"/>
+        
+        <!-- Jabong parse fields                                -->
+        <field name="productTitle" family="j" qualifier="t"/>
+        <field name="sellingPrice" family="j" qualifier="sp"/>
+        <field name="breadcrumb" family="j" qualifier="bc"/>
+        <field name="images" family="j" qualifier="img"/>
+        <field name="brand" family="j" qualifier="b"/>
+        <field name="size" family="j" qualifier="s"/>
+        <field name="pdp" family="j" qualifier="pdp"/>
+        <field name="mapped" family="j" qualifier="m"/>
     </class>
     
     <table name="host">
