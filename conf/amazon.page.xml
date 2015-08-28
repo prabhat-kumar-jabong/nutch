@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Page xmlns:tns="http://www.example.org/page/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/page/ ../../../../../../java/org/apache/nutch/jabong/xml/page.xsd ">
-  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="(//div[contains(@id,'FGContainer_')])[1]/div/div[2]/ul/li/div/a">
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="(//div[contains(@id,'FGContainer_')])/div/div[2]/ul/li/div/a">
   </Type>
+  
+  <!-- not able to parse this link http://www.amazon.in/Geoffrey-Beene-Formal-Shirt-8907002441393_251481515_42_Red/dp/B00TGSLDS0 -->
+  
   <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='ppd']">
       <Readers>
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" />
@@ -13,10 +16,19 @@
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />                  
       </Readers>
   </Type>
+  
   <Type id="org.apache.nutch.namespace.page.PageNodeTextReader" key="title" xpath="/html/head/title/text()">
   </Type>
-  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[contains(@id,'result_')]/div/a">
+  
+  <!-- http://www.amazon.in/s?_encoding=UTF8&ie=UTF8&rh=i%3Aapparel%2Cn%3A1968024031%2Ck%3AMens_DenimStore_AntiFits%2Cn%3A1968024031 -->
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//ul/li[contains(@id,'result_')]//div[@class='a-row a-spacing-base']//a[@class='a-link-normal a-text-normal']">
   </Type>
+  
+  <!--  http://www.amazon.in/s?_encoding=UTF8&ie=UTF8&rh=i%3Aapparel%2Cn%3A1968107031 -->
+  <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[contains(@id,'result_')]/div/a[1]">
+  </Type>
+  
   <Type id="org.apache.nutch.namespace.page.PageOutlinkReader" key="outlinks" xpath="//*[@id='pagnNextLink']">
   </Type>
+  
 </Page>

@@ -72,10 +72,10 @@
   <value>true</value>
   <description>If true, fetcher will log more verbosely.</description>
 </property>
-<property>
+<!-- <property>
    <name>plugin.folders</name>
-   <value>/home/jabong/work/nutch/nutch/build/plugins</value>
- </property>
+   <value>/Users/jade/workspace/jabonglabs/nutch/build/plugins</value>
+ </property> -->
  <property>
   <name>flipkart.urlnormalizer.regex.file</name>
   <value>flipkart-regex-normalize.xml</value>

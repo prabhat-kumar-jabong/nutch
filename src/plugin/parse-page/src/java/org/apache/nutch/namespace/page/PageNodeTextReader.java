@@ -37,7 +37,10 @@ public class PageNodeTextReader extends AbstractPageReader{
 		} catch (XPathExpressionException e) {
 			e.printStackTrace();
 			LOG.warn("Error while parsing content for source "+source.getUrl());
-		} 
+		} catch(Exception e){
+			e.printStackTrace();
+			LOG.warn("Error while parsing content for source "+source.getUrl());
+		}
 		
 	}
 

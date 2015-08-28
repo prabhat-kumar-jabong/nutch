@@ -56,6 +56,12 @@ public class URLPartitioner implements Configurable {
   private int seed;
   private URLNormalizers normalizers;
   private String mode = PARTITION_MODE_HOST;
+  
+  
+  /**
+   * New Partition
+   */
+  private static int currentPartitionNumber = 0;
 
   @Override
   public Configuration getConf() {
@@ -111,7 +117,12 @@ public class URLPartitioner implements Configurable {
 
     // make hosts wind up in different partitions on different runs
     hashCode ^= seed;
-    return (hashCode & Integer.MAX_VALUE) % numReduceTasks;
+    //return (hashCode & Integer.MAX_VALUE) % numReduceTasks;
+    if(currentPartitionNumber>=100){
+    	currentPartitionNumber = 0;
+    }
+    
+    return currentPartitionNumber++%5;
   }
 
   public static class SelectorEntryPartitioner extends

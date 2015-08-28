@@ -53,7 +53,12 @@ public class PagePDPReader extends AbstractPageReader{
 							Map<String, String> map = new HashMap<String, String>();
 							map.put("key", reader.getKey());
 							map.put("xpath", reader.getXpath());
-							pr.read(source, output, map);
+							try{
+								pr.read(source, output, map);
+							}catch(Exception e){
+								e.printStackTrace();
+								LOG.warn("Error while parsing content for source "+source.getUrl());
+							}
 						}
 						
 						outputMap.put(key, output);
