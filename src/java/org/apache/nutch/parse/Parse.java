@@ -28,7 +28,7 @@ public class Parse {
   private String images;
   private String brand;
   private String size;
-  private boolean pdp;
+  private String sku;
   private Integer mapped;
 
   public Parse() {
@@ -45,7 +45,7 @@ public class Parse {
   public Parse(String text, String title, Outlink[] outlinks,
       org.apache.nutch.storage.ParseStatus parseStatus, String productTitle,
       String sellingPrice, String breadcrumb, String images, String brand,
-      String size, boolean pdp, Integer mapped) {
+      String size, String sku, Integer mapped) {
     this.text = text;
     this.title = title;
     this.outlinks = outlinks;
@@ -56,7 +56,7 @@ public class Parse {
     this.images = images;
     this.brand = brand;
     this.size = size;
-    this.pdp = pdp;
+    this.sku = sku;
     this.mapped = mapped;
   }
 
@@ -139,13 +139,13 @@ public class Parse {
   public void setSize(String size) {
     this.size = size;
   }
-
-  public boolean isPdp() {
-    return pdp;
+  
+  public String getSku() {
+    return sku;
   }
 
-  public void setPdp(boolean pdp) {
-    this.pdp = pdp;
+  public void setSku(String sku) {
+    this.sku = sku;
   }
 
   public Integer getMapped() {

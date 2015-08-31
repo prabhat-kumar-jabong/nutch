@@ -91,7 +91,7 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="images" family="j" qualifier="img"/>
         <field name="brand" family="j" qualifier="b"/>
         <field name="size" family="j" qualifier="s"/>
-        <field name="pdp" family="j" qualifier="pdp"/>
+        <field name="sku" family="j" qualifier="sku"/>
         <field name="mapped" family="j" qualifier="m"/>
     </class>
     
