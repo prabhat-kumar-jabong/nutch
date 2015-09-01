@@ -13,7 +13,11 @@
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb"  />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />                  
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[1]/b/text()" key="sku1Key"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[1]/text()" key="sku1Value"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[2]/b/text()" key="sku2Key"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[2]/text()" key="sku2Value"  />
       </Readers>
   </Type>
   

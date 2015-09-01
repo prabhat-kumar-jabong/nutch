@@ -42,11 +42,14 @@ import org.apache.nutch.jabong.JabongKey;
 import org.apache.nutch.metadata.Nutch;
 import org.apache.nutch.storage.StorageUtils;
 import org.apache.nutch.storage.WebPage;
+import org.apache.nutch.storage.WebPage.Field;
 import org.apache.nutch.util.NutchConfiguration;
 import org.apache.nutch.util.NutchJob;
 import org.apache.nutch.util.NutchTool;
 import org.apache.nutch.util.TimingUtil;
 import org.apache.nutch.util.ToolUtil;
+
+import sun.util.logging.resources.logging;
 
 
 public class GeneratorJob extends NutchTool implements Tool {
@@ -165,7 +168,16 @@ public class GeneratorJob extends NutchTool implements Tool {
     Collection<WebPage.Field> fields = new HashSet<WebPage.Field>(FIELDS);
     fields.addAll(FetchScheduleFactory.getFetchSchedule(job.getConfiguration())
         .getFields());
-    fields.add(WebPage.Field.PAGE_TYPE);
+    
+    WebPage.Field column = null;
+    String columnName = getConf().get(RERUN_CONDITION_COLUMN_NAME);
+    if (columnName != null) {
+      column = WebPage.Field.valueOf(columnName);
+    }
+    if (column != null) {
+      fields.add(column);
+    }
+    
     return fields;
   }
 
