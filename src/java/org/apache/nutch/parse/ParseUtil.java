@@ -244,6 +244,18 @@ public class ParseUtil extends Configured {
           page.setSize(new Utf8(parse.getSize()));
           page.setSKU(new Utf8(String.valueOf(parse.getSku())));
           page.setMapped(new Utf8(parse.getMapped().toString()));
+          if (parse.getBreadcrumb1() != null) {
+            page.setBreadcrumb1(new Utf8(parse.getBreadcrumb1()));
+          }
+          if (parse.getBreadcrumb2() != null) {
+            page.setBreadcrumb2(new Utf8(parse.getBreadcrumb2()));
+          }
+          if (parse.getBreadcrumb3() != null) {
+            page.setBreadcrumb3(new Utf8(parse.getBreadcrumb3()));
+          }
+          if (parse.getBreadcrumb4() != null) {
+            page.setBreadcrumb4(new Utf8(parse.getBreadcrumb4()));
+          }
         }
         
         ByteBuffer prevSig = page.getSignature();

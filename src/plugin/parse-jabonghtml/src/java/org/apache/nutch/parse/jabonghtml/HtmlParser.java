@@ -203,6 +203,10 @@ public class HtmlParser implements Parser {
     String brand = "";
     String size = "";
     String sku = "";
+    String breadcrumb1 = null;
+    String breadcrumb2 = null;
+    String breadcrumb3 = null;
+    String breadcrumb4 = null;
     Integer mapped = ((page.get(WebPage.Field.valueOf("MAPPED").ordinal()) == null) ? PDPMapping.NEW.getValue() : Integer.valueOf(page.get(WebPage.Field.valueOf("MAPPED").ordinal()).toString()));
     
     Outlink[] outlinks = new Outlink[0];
@@ -287,9 +291,22 @@ public class HtmlParser implements Parser {
         images = gson.toJson(pdp.get("images"));
         brand = (String) pdp.get("brand");
         size = gson.toJson(pdp.get("size"));
-          sku = (pdp.get("sku1Key") != null && pdp.get("sku1Key").toString()
+        sku = (pdp.get("sku1Key") != null && pdp.get("sku1Key").toString()
               .trim().equals("ASIN:")) ? (String) pdp.get("sku1Value")
               : (String) pdp.get("sku2Value");
+        if(pdp.get("breadCrumb") != null) {
+          List<String> bc = (List<String>) pdp.get("breadCrumb");
+          switch (bc.size()) {
+          case 4:
+            breadcrumb4 = bc.get(3);
+          case 3:
+            breadcrumb3 = bc.get(2);
+          case 2:
+            breadcrumb2 = bc.get(1);
+          case 1:
+            breadcrumb1 = bc.get(0);
+          }
+        }
       }
     	
     	title = (String)outputMap.get("title");
@@ -359,7 +376,8 @@ public class HtmlParser implements Parser {
     }
 
     Parse parse = new Parse(text, title, outlinks, status, productTitle,
-        sellingPrice, breadcrumb, images, brand, size, sku, mapped);
+        sellingPrice, breadcrumb, images, brand, size, sku, mapped, 
+        breadcrumb1, breadcrumb2, breadcrumb3, breadcrumb4);
     parse = htmlParseFilters.filter(url, page, parse, metaTags, root);
 
     if (metaTags.getNoCache()) { // not okay to cache

@@ -30,6 +30,10 @@ public class Parse {
   private String size;
   private String sku;
   private Integer mapped;
+  private String breadcrumb1;
+  private String breadcrumb2;
+  private String breadcrumb3;
+  private String breadcrumb4;
 
   public Parse() {
   }
@@ -45,7 +49,8 @@ public class Parse {
   public Parse(String text, String title, Outlink[] outlinks,
       org.apache.nutch.storage.ParseStatus parseStatus, String productTitle,
       String sellingPrice, String breadcrumb, String images, String brand,
-      String size, String sku, Integer mapped) {
+      String size, String sku, Integer mapped, String breadcrumb1, 
+      String breadcrumb2, String breadcrumb3, String breadcrumb4) {
     this.text = text;
     this.title = title;
     this.outlinks = outlinks;
@@ -58,6 +63,10 @@ public class Parse {
     this.size = size;
     this.sku = sku;
     this.mapped = mapped;
+    this.breadcrumb1 = breadcrumb1;
+    this.breadcrumb2 = breadcrumb2;
+    this.breadcrumb3 = breadcrumb3;
+    this.breadcrumb4 = breadcrumb4;
   }
 
   public String getText() {
@@ -154,5 +163,37 @@ public class Parse {
 
   public void setMapped(Integer mapped) {
     this.mapped = mapped;
+  }
+
+  public String getBreadcrumb1() {
+    return breadcrumb1;
+  }
+
+  public void setBreadcrumb1(String breadcrumb1) {
+    this.breadcrumb1 = breadcrumb1;
+  }
+
+  public String getBreadcrumb2() {
+    return breadcrumb2;
+  }
+
+  public void setBreadcrumb2(String breadcrumb2) {
+    this.breadcrumb2 = breadcrumb2;
+  }
+
+  public String getBreadcrumb3() {
+    return breadcrumb3;
+  }
+
+  public void setBreadcrumb3(String breadcrumb3) {
+    this.breadcrumb3 = breadcrumb3;
+  }
+
+  public String getBreadcrumb4() {
+    return breadcrumb4;
+  }
+
+  public void setBreadcrumb4(String breadcrumb4) {
+    this.breadcrumb4 = breadcrumb4;
   }
 }
