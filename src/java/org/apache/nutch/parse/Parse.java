@@ -93,7 +93,7 @@ public class Parse {
   }
   
   public String getProductTitle() {
-    return productTitle;
+    return productTitle!=null?productTitle:"";
   }
 
   public void setProductTitle(String productTitle) {
@@ -101,7 +101,7 @@ public class Parse {
   }
 
   public String getSellingPrice() {
-    return sellingPrice;
+    return sellingPrice!=null?sellingPrice:"";
   }
 
   public void setSellingPrice(String sellingPrice) {
@@ -109,7 +109,7 @@ public class Parse {
   }
 
   public String getBreadcrumb() {
-    return breadcrumb;
+    return breadcrumb!=null?breadcrumb:"";
   }
 
   public void setBreadcrumb(String breadcrumb) {
@@ -117,7 +117,7 @@ public class Parse {
   }
 
   public String getImages() {
-    return images;
+    return images!=null?images:"";
   }
 
   public void setImages(String images) {
@@ -125,7 +125,7 @@ public class Parse {
   }
 
   public String getBrand() {
-    return brand;
+    return brand!=null?brand:"";
   }
 
   public void setBrand(String brand) {
@@ -133,7 +133,7 @@ public class Parse {
   }
 
   public String getSize() {
-    return size;
+    return size!=null?size:"";
   }
 
   public void setSize(String size) {
@@ -141,7 +141,7 @@ public class Parse {
   }
   
   public String getSku() {
-    return sku;
+    return sku!=null?sku:"";
   }
 
   public void setSku(String sku) {

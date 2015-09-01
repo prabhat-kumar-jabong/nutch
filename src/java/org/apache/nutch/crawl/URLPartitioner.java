@@ -61,7 +61,7 @@ public class URLPartitioner implements Configurable {
   /**
    * New Partition
    */
-  private static int currentPartitionNumber = 0;
+  private static int currentPartitionNumber = 1;
 
   @Override
   public Configuration getConf() {
@@ -119,10 +119,10 @@ public class URLPartitioner implements Configurable {
     hashCode ^= seed;
     //return (hashCode & Integer.MAX_VALUE) % numReduceTasks;
     if(currentPartitionNumber>=100){
-    	currentPartitionNumber = 0;
+    	currentPartitionNumber = 1;
     }
     
-    return currentPartitionNumber++%5;
+    return currentPartitionNumber++%10;
   }
 
   public static class SelectorEntryPartitioner extends

@@ -619,7 +619,7 @@
 
 <property>
   <name>fetcher.server.delay</name>
-  <value>5.0</value>
+  <value>3.0</value>
   <description>The number of seconds the fetcher will delay between 
    successive requests to the same server. Note that this might get
    overriden by a Crawl-Delay from a robots.txt and is used ONLY if 
@@ -629,7 +629,7 @@
 
 <property>
   <name>fetcher.server.min.delay</name>
-  <value>5.0</value>
+  <value>3.0</value>
   <description>The minimum number of seconds the fetcher will delay between 
   successive requests to the same server. This value is applicable ONLY
   if fetcher.threads.per.queue is greater than 1 (i.e. the host blocking
