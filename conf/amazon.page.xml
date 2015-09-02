@@ -5,12 +5,14 @@
   
   <!-- not able to parse this link http://www.amazon.in/Geoffrey-Beene-Formal-Shirt-8907002441393_251481515_42_Red/dp/B00TGSLDS0 -->
   
-  <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='ppd']">
+  <!-- <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='ppd']"> -->
+  <Type id="org.apache.nutch.namespace.page.PagePDPReader" key="pdp" xpath="//*[@id='dp']">
       <Readers>
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='productTitle']/text()" key="title"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']/table/tbody/tr[1]/td[2]/text()" key="mrp"  />      
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='variation_size_name']/div/span[1]/text()" key="size"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='wayfinding-breadcrumbs_container']//a/text()" key="breadCrumb"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//span[@id='priceblock_ourprice' or @id='priceblock_dealprice' or @id='priceblock_saleprice']/text()" key="sp" />
