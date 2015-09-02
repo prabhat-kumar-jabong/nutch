@@ -113,6 +113,44 @@ public class URLUtil {
     return candidate;
   }
 
+  
+  /**
+   * Returns the domain name of the url. The domain name of a url is the
+   * substring of the url's hostname, w/o subdomain names. As an example <br>
+   * <code>
+   *  getDomainName(conf, new URL(http://lucene.apache.org/))
+   *  </code><br>
+   * will return <br>
+   * <code> apache.org</code>
+   * */
+  public static String getCategoryName(URL url) {
+//    DomainSuffixes tlds = DomainSuffixes.getInstance();
+    String host = url.getHost();
+    String path = url.getPath();
+    String tokens[] = path.split("/");
+    if(tokens==null||tokens.length==0){
+    	tokens = new String[]{""};
+    }
+    return host.concat("/").concat(tokens[0]);
+    // it seems that java returns hostnames ending with .
+//    if (host.endsWith("."))
+//      host = host.substring(0, host.length() - 1);
+//    if (IP_PATTERN.matcher(host).matches())
+//      return host;
+//
+//    int index = 0;
+//    String candidate = host;
+//    for (; index >= 0;) {
+//      index = candidate.indexOf('.');
+//      String subCandidate = candidate.substring(index + 1);
+//      if (tlds.isDomainSuffix(subCandidate)) {
+//        return candidate;
+//      }
+//      candidate = subCandidate;
+//    }
+//    return candidate;
+  }
+  
   /**
    * Returns the domain name of the url. The domain name of a url is the
    * substring of the url's hostname, w/o subdomain names. As an example <br>

@@ -5,6 +5,7 @@ conf/slaves
 build/
 runtime/
 logs/
+urls/
 .classpath
 .project
 .DS_Store

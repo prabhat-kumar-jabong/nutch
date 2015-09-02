@@ -598,7 +598,7 @@
 <!--  We have our own partitioning -->
 <property>
   <name>partition.url.mode</name>
-  <value>byIP</value>
+  <value>byDomain</value>
   <description>Determines how to partition URLs. Default value is 'byHost', 
   also takes 'byDomain' or 'byIP'. 
   </description>
@@ -673,7 +673,7 @@
 <!--  @prabhat we have written our own partitionar to make it more parallel -->
 <property>
   <name>fetcher.queue.mode</name>
-  <value>byIP</value>
+  <value>byDomain</value>
   <description>Determines how the URLs are placed into queues. 
    Allowed values are 'byHost', 'byDomain' and 'byIP'.
    The value would usually correspond to that of 'partition.url.mode'.

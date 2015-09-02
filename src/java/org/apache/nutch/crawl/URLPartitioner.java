@@ -61,7 +61,7 @@ public class URLPartitioner implements Configurable {
   /**
    * New Partition
    */
-  private static int currentPartitionNumber = 1;
+  private static int currentPartitionNumber = 0;
 
   @Override
   public Configuration getConf() {
@@ -88,41 +88,41 @@ public class URLPartitioner implements Configurable {
       return 0;
     }
 
-    int hashCode;
-    URL url = null;
-    try {
-      urlString = normalizers.normalize(urlString,
-          URLNormalizers.SCOPE_PARTITION);
-      hashCode = urlString.hashCode();
-      url = new URL(urlString);
-    } catch (MalformedURLException e) {
-      LOG.warn("Malformed URL: '" + urlString + "'");
-      hashCode = urlString.hashCode();
-    }
-
-    if (url != null) {
-      if (mode.equals(PARTITION_MODE_HOST)) {
-        hashCode = url.getHost().hashCode();
-      } else if (mode.equals(PARTITION_MODE_DOMAIN)) {
-        hashCode = URLUtil.getDomainName(url).hashCode();
-      } else { // MODE IP
-        try {
-          InetAddress address = InetAddress.getByName(url.getHost());
-          hashCode = address.getHostAddress().hashCode();
-        } catch (UnknownHostException e) {
-          GeneratorJob.LOG.info("Couldn't find IP for host: " + url.getHost());
-        }
-      }
-    }
-
-    // make hosts wind up in different partitions on different runs
-    hashCode ^= seed;
-    //return (hashCode & Integer.MAX_VALUE) % numReduceTasks;
-    if(currentPartitionNumber>=100){
-    	currentPartitionNumber = 1;
-    }
+//    int hashCode;
+//    URL url = null;
+//    try {
+//      urlString = normalizers.normalize(urlString,
+//          URLNormalizers.SCOPE_PARTITION);
+//      hashCode = urlString.hashCode();
+//      url = new URL(urlString);
+//    } catch (MalformedURLException e) {
+//      LOG.warn("Malformed URL: '" + urlString + "'");
+//      hashCode = urlString.hashCode();
+//    }
+//
+//    if (url != null) {
+//      if (mode.equals(PARTITION_MODE_HOST)) {
+//        hashCode = url.getHost().hashCode();
+//      } else if (mode.equals(PARTITION_MODE_DOMAIN)) {
+//        hashCode = URLUtil.getCategoryName(url).hashCode();
+//      } else { // MODE IP
+//        try {
+//          InetAddress address = InetAddress.getByName(url.getHost());
+//          hashCode = address.getHostAddress().hashCode();
+//        } catch (UnknownHostException e) {
+//          GeneratorJob.LOG.info("Couldn't find IP for host: " + url.getHost());
+//        }
+//      }
+//    }
+//
+//    // make hosts wind up in different partitions on different runs
+//    hashCode ^= seed;
+//    return (hashCode & Integer.MAX_VALUE) % numReduceTasks;
+//    if(currentPartitionNumber>=100){
+//    	currentPartitionNumber = 0;
+//    }
     
-    return currentPartitionNumber++%10;
+    return currentPartitionNumber++%numReduceTasks;
   }
 
   public static class SelectorEntryPartitioner extends
