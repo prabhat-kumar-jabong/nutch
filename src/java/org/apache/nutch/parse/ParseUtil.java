@@ -236,12 +236,17 @@ public class ParseUtil extends Configured {
         page.setTitle(new Utf8(parse.getTitle()));
         // Persist the data only if it is available.
         if (parse.getSellingPrice() != null) {
+          page.setCompany(new Utf8(parse.getCompany()));
           page.setProductTitle(new Utf8(parse.getProductTitle()));
           page.setSellingPrice(new Utf8(parse.getSellingPrice()));
+          page.setMrp(new Utf8(parse.getMrp()));
           page.setBreadcrumb(new Utf8(parse.getBreadcrumb()));
           page.setImages(new Utf8(parse.getImages()));
           page.setBrand(new Utf8(parse.getBrand()));
           page.setSize(new Utf8(parse.getSize()));
+          if(parse.getAvailableSizeCount() != null) {
+            page.setAvailableSizeCount(new Utf8(parse.getAvailableSizeCount().toString()));
+          }
           page.setSKU(new Utf8(String.valueOf(parse.getSku())));
           page.setMapped(new Utf8(parse.getMapped().toString()));
           if (parse.getBreadcrumb1() != null) {

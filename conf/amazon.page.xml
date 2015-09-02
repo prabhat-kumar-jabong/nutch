@@ -18,6 +18,8 @@
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[1]/text()" key="sku1Value"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[2]/b/text()" key="sku2Key"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[2]/text()" key="sku2Value"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[3]/b/text()" key="sku3Key"  />
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//div[@id='detail_bullets_id']//div[@class='content']/ul/li[3]/text()" key="sku3Value"  />
       </Readers>
   </Type>
   
