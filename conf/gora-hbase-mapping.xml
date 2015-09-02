@@ -85,12 +85,15 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="markers" family="mk"/>
         
         <!-- Jabong parse fields                                -->
+        <field name="company" family="j" qualifier="c"/>
         <field name="productTitle" family="j" qualifier="t"/>
         <field name="sellingPrice" family="j" qualifier="sp"/>
+        <field name="mrp" family="j" qualifier="mrp"/>
         <field name="breadcrumb" family="j" qualifier="bc"/>
         <field name="images" family="j" qualifier="img"/>
         <field name="brand" family="j" qualifier="b"/>
         <field name="size" family="j" qualifier="s"/>
+        <field name="availableSizeCount" family="j" qualifier="asc"/>
         <field name="sku" family="j" qualifier="sku"/>
         <field name="mapped" family="j" qualifier="m"/>
         <field name="breadcrumb1" family="j" qualifier="bc1"/>

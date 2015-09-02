@@ -22,12 +22,15 @@ public class Parse {
   private String title;
   private Outlink[] outlinks;
   private org.apache.nutch.storage.ParseStatus parseStatus;
+  private String company;
   private String productTitle;
   private String sellingPrice;
+  private String mrp;
   private String breadcrumb;
   private String images;
   private String brand;
   private String size;
+  private Integer availableSizeCount;
   private String sku;
   private Integer mapped;
   private String breadcrumb1;
@@ -47,20 +50,24 @@ public class Parse {
   }
 
   public Parse(String text, String title, Outlink[] outlinks,
-      org.apache.nutch.storage.ParseStatus parseStatus, String productTitle,
-      String sellingPrice, String breadcrumb, String images, String brand,
-      String size, String sku, Integer mapped, String breadcrumb1, 
-      String breadcrumb2, String breadcrumb3, String breadcrumb4) {
+      org.apache.nutch.storage.ParseStatus parseStatus, String company,
+      String productTitle, String sellingPrice, String mrp, String breadcrumb,
+      String images, String brand, String size, Integer availableSizeCount,
+      String sku, Integer mapped, String breadcrumb1, String breadcrumb2,
+      String breadcrumb3, String breadcrumb4) {
     this.text = text;
     this.title = title;
     this.outlinks = outlinks;
     this.parseStatus = parseStatus;
+    this.company = company;
     this.productTitle = productTitle;
     this.sellingPrice = sellingPrice;
+    this.mrp = mrp;
     this.breadcrumb = breadcrumb;
     this.images = images;
     this.brand = brand;
     this.size = size;
+    this.availableSizeCount = availableSizeCount;
     this.sku = sku;
     this.mapped = mapped;
     this.breadcrumb1 = breadcrumb1;
@@ -101,6 +108,14 @@ public class Parse {
     this.parseStatus = parseStatus;
   }
   
+  public String getCompany() {
+    return company;
+  }
+
+  public void setCompany(String company) {
+    this.company = company;
+  }
+
   public String getProductTitle() {
     return productTitle;
   }
@@ -115,6 +130,14 @@ public class Parse {
 
   public void setSellingPrice(String sellingPrice) {
     this.sellingPrice = sellingPrice;
+  }
+
+  public String getMrp() {
+    return mrp;
+  }
+
+  public void setMrp(String mrp) {
+    this.mrp = mrp;
   }
 
   public String getBreadcrumb() {
@@ -149,6 +172,14 @@ public class Parse {
     this.size = size;
   }
   
+  public Integer getAvailableSizeCount() {
+    return availableSizeCount;
+  }
+
+  public void setAvailableSizeCount(Integer availableSizeCount) {
+    this.availableSizeCount = availableSizeCount;
+  }
+
   public String getSku() {
     return sku;
   }

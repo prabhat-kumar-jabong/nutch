@@ -198,6 +198,7 @@ public class HtmlParser implements Parser {
     String title = "";
     String productTitle = "";
     String sellingPrice = null;
+    String mrp = "";
     String breadcrumb = "";
     String images = "";
     String brand = "";
@@ -207,6 +208,8 @@ public class HtmlParser implements Parser {
     String breadcrumb2 = null;
     String breadcrumb3 = null;
     String breadcrumb4 = null;
+    Integer availableSizeCount = null;
+    String company = "";
     Integer mapped = ((page.get(WebPage.Field.valueOf("MAPPED").ordinal()) == null) ? PDPMapping.NEW.getValue() : Integer.valueOf(page.get(WebPage.Field.valueOf("MAPPED").ordinal()).toString()));
     
     Outlink[] outlinks = new Outlink[0];
@@ -287,13 +290,23 @@ public class HtmlParser implements Parser {
         text = gson.toJson(pdp);
         productTitle = (String) pdp.get("title");
         sellingPrice = (String) pdp.get("sp");
+        if(pdp.get("mrp") != null) {
+          mrp = (String) pdp.get("mrp");
+        }
         breadcrumb = gson.toJson(pdp.get("breadCrumb"));
         images = gson.toJson(pdp.get("images"));
         brand = (String) pdp.get("brand");
         size = gson.toJson(pdp.get("size"));
-        sku = (pdp.get("sku1Key") != null && pdp.get("sku1Key").toString()
-              .trim().equals("ASIN:")) ? (String) pdp.get("sku1Value")
-              : (String) pdp.get("sku2Value");
+        if(pdp.get("size") != null) {
+          availableSizeCount = ((List)pdp.get("size")).size() - 1;
+        }
+        if(pdp.get("sku1Key") != null && pdp.get("sku1Key").toString().trim().equals("ASIN:")) {
+          sku = (String) pdp.get("sku1Value");
+        } else if(pdp.get("sku2Key") != null && pdp.get("sku2Key").toString().trim().equals("ASIN:")) {
+          sku = (String) pdp.get("sku2Value");
+        } else if(pdp.get("sku3Key") != null && pdp.get("sku3Key").toString().trim().equals("ASIN:")) {
+          sku = (String) pdp.get("sku3Value");
+        }
         if(pdp.get("breadCrumb") != null) {
           List<String> bc = (List<String>) pdp.get("breadCrumb");
           switch (bc.size()) {
@@ -309,6 +322,7 @@ public class HtmlParser implements Parser {
         }
       }
     	
+    	company = getConf().get(JabongKey.NAMESPACE);
     	title = (String)outputMap.get("title");
       }
       
@@ -375,9 +389,10 @@ public class HtmlParser implements Parser {
           new Utf8(Integer.toString(metaTags.getRefreshTime())));
     }
 
-    Parse parse = new Parse(text, title, outlinks, status, productTitle,
-        sellingPrice, breadcrumb, images, brand, size, sku, mapped, 
-        breadcrumb1, breadcrumb2, breadcrumb3, breadcrumb4);
+    Parse parse = new Parse(text, title, outlinks, status, company,
+        productTitle, sellingPrice, mrp, breadcrumb, images, brand, size,
+        availableSizeCount, sku, mapped, breadcrumb1, breadcrumb2, breadcrumb3,
+        breadcrumb4);
     parse = htmlParseFilters.filter(url, page, parse, metaTags, root);
 
     if (metaTags.getNoCache()) { // not okay to cache
