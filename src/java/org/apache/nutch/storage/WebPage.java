@@ -27,7 +27,7 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
     implements org.apache.avro.specific.SpecificRecord,
     org.apache.gora.persistency.Persistent {
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser()
-      .parse("{\"type\":\"record\",\"name\":\"WebPage\",\"namespace\":\"org.apache.nutch.storage\",\"doc\":\"WebPage is the primary data structure in Nutch representing crawl data for a given WebPage at some point in time\",\"fields\":[{\"name\":\"baseUrl\",\"type\":[\"null\",\"string\"],\"doc\":\"The original associated with this WebPage.\",\"default\":null},{\"name\":\"status\",\"type\":\"int\",\"doc\":\"A crawl status associated with the WebPage, can be of value STATUS_UNFETCHED - WebPage was not fetched yet, STATUS_FETCHED - WebPage was successfully fetched, STATUS_GONE - WebPage no longer exists, STATUS_REDIR_TEMP - WebPage temporarily redirects to other page, STATUS_REDIR_PERM - WebPage permanently redirects to other page, STATUS_RETRY - Fetching unsuccessful, needs to be retried e.g. transient errors and STATUS_NOTMODIFIED - fetching successful - page is not modified\",\"default\":0},{\"name\":\"fetchTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when the page was fetched.\",\"default\":0},{\"name\":\"prevFetchTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when the page was last fetched if it was previously fetched which can be used to calculate time delta within a fetching schedule implementation\",\"default\":0},{\"name\":\"fetchInterval\",\"type\":\"int\",\"doc\":\"The default number of seconds between re-fetches of a page. The default is considered as 30 days unless a custom fetch schedle is implemented.\",\"default\":0},{\"name\":\"retriesSinceFetch\",\"type\":\"int\",\"doc\":\"The number of retried attempts at fetching the WebPage since it was last successfully fetched.\",\"default\":0},{\"name\":\"modifiedTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when this WebPage was modified by the WebPage author, if this is not available we default to the server for this information. This is important to understand the changing nature of the WebPage.\",\"default\":0},{\"name\":\"prevModifiedTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when this WebPage was previously modified by the author, if this is not available then we default to the server for this information. This is important to understand the changing nature of a WebPage.\",\"default\":0},{\"name\":\"protocolStatus\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"ProtocolStatus\",\"doc\":\"A nested container representing data captured from web server responses.\",\"fields\":[{\"name\":\"code\",\"type\":\"int\",\"doc\":\"A protocol response code which can be one of SUCCESS - content was retrieved without errors, FAILED - Content was not retrieved. Any further errors may be indicated in args, PROTO_NOT_FOUND - This protocol was not found. Application may attempt to retry later, GONE - Resource is gone, MOVED - Resource has moved permanently. New url should be found in args, TEMP_MOVED - Resource has moved temporarily. New url should be found in args., NOTFOUND - Resource was not found, RETRY - Temporary failure. Application may retry immediately., EXCEPTION - Unspecified exception occured. Further information may be provided in args., ACCESS_DENIED - Access denied - authorization required, but missing/incorrect., ROBOTS_DENIED - Access denied by robots.txt rules., REDIR_EXCEEDED - Too many redirects., NOTFETCHING - Not fetching., NOTMODIFIED - Unchanged since the last fetch., WOULDBLOCK - Request was refused by protocol plugins, because it would block. The expected number of milliseconds to wait before retry may be provided in args., BLOCKED - Thread was blocked http.max.delays times during fetching.\",\"default\":0},{\"name\":\"args\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Optional arguments supplied to compliment and/or justify the response code.\",\"default\":[]},{\"name\":\"lastModified\",\"type\":\"long\",\"doc\":\"A server reponse indicating when this page was last modified, this can be unreliable at times hence this is used as a default fall back value for the preferred 'modifiedTime' and 'preModifiedTime' obtained from the WebPage itself.\",\"default\":0}]}],\"default\":null},{\"name\":\"content\",\"type\":[\"null\",\"bytes\"],\"doc\":\"The entire raw document content e.g. raw XHTML\",\"default\":null},{\"name\":\"contentType\",\"type\":[\"null\",\"string\"],\"doc\":\"The type of the content contained within the document itself. ContentType is an alias for MimeType. Historically, this parameter was only called MimeType, but since this is actually the value included in the HTTP Content-Type header, it can also include the character set encoding, which makes it more than just a MimeType specification. If MimeType is specified e.g. not None, that value is used. Otherwise, ContentType is used. If neither is given, the DEFAULT_CONTENT_TYPE setting is used.\",\"default\":null},{\"name\":\"prevSignature\",\"type\":[\"null\",\"bytes\"],\"doc\":\"An implementation of a WebPage's previous signature from which it can be identified and referenced at any point in time. This can be used to uniquely identify WebPage deltas based on page fingerprints.\",\"default\":null},{\"name\":\"signature\",\"type\":[\"null\",\"bytes\"],\"doc\":\"An implementation of a WebPage's signature from which it can be identified and referenced at any point in time. This is essentially the WebPage's fingerprint represnting its state for any point in time.\",\"default\":null},{\"name\":\"title\",\"type\":[\"null\",\"string\"],\"doc\":\"The title of the WebPage.\",\"default\":null},{\"name\":\"text\",\"type\":[\"null\",\"string\"],\"doc\":\"The textual content of the WebPage devoid from native markup.\",\"default\":null},{\"name\":\"parseStatus\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"ParseStatus\",\"doc\":\"A nested container representing parse status data captured from invocation of parsers on fetch of a WebPage\",\"fields\":[{\"name\":\"majorCode\",\"type\":\"int\",\"doc\":\"Major parsing status' including NOTPARSED (Parsing was not performed), SUCCESS (Parsing succeeded), FAILED (General failure. There may be a more specific error message in arguments.)\",\"default\":0},{\"name\":\"minorCode\",\"type\":\"int\",\"doc\":\"Minor parsing status' including SUCCESS_OK - Successful parse devoid of anomalies or issues, SUCCESS_REDIRECT - Parsed content contains a directive to redirect to another URL. The target URL can be retrieved from the arguments., FAILED_EXCEPTION - Parsing failed. An Exception occured which may be retrieved from the arguments., FAILED_TRUNCATED - Parsing failed. Content was truncated, but the parser cannot handle incomplete content., FAILED_INVALID_FORMAT - Parsing failed. Invalid format e.g. the content may be corrupted or of wrong type., FAILED_MISSING_PARTS - Parsing failed. Other related parts of the content are needed to complete parsing. The list of URLs to missing parts may be provided in arguments. The Fetcher may decide to fetch these parts at once, then put them into Content.metadata, and supply them for re-parsing., FAILED_MISING_CONTENT - Parsing failed. There was no content to be parsed - probably caused by errors at protocol stage.\",\"default\":0},{\"name\":\"args\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Optional arguments supplied to compliment and/or justify the parse status code.\",\"default\":[]}]}],\"default\":null},{\"name\":\"score\",\"type\":\"float\",\"doc\":\"A score used to determine a WebPage's relevance within the web graph it is part of. This score may change over time based on graph characteristics.\",\"default\":0},{\"name\":\"reprUrl\",\"type\":[\"null\",\"string\"],\"doc\":\"In the case where we are given two urls, a source and a destination of a redirect, we should determine and persist the representative url. The logic used to determine this is based largely on Yahoo!'s Slurp Crawler\",\"default\":null},{\"name\":\"headers\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Header information returned from the web server used to server the content which is subsequently fetched from. This includes keys such as TRANSFER_ENCODING, CONTENT_ENCODING, CONTENT_LANGUAGE, CONTENT_LENGTH, CONTENT_LOCATION, CONTENT_DISPOSITION, CONTENT_MD5, CONTENT_TYPE, LAST_MODIFIED and LOCATION.\",\"default\":{}},{\"name\":\"outlinks\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Embedded hyperlinks which direct outside of the current domain.\",\"default\":{}},{\"name\":\"inlinks\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Embedded hyperlinks which link to pages within the current domain.\",\"default\":{}},{\"name\":\"markers\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Markers flags which represent user and machine decisions which have affected influenced a WebPage's current state. Markers can be system specific and user machine driven in nature. They are assigned to a WebPage on a job-by-job basis and thier values indicative of what actions should be associated with a WebPage.\",\"default\":{}},{\"name\":\"metadata\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"bytes\"]},\"doc\":\"A multi-valued metadata container used for storing everything from structured WebPage characterists, to ad-hoc extraction and metadata augmentation for any given WebPage.\",\"default\":{}},{\"name\":\"batchId\",\"type\":[\"null\",\"string\"],\"doc\":\"A batchId that this WebPage is assigned to. WebPage's are fetched in batches, called fetchlists. Pages are partitioned but can always be associated and fetched alongside pages of similar value (within a crawl cycle) based on batchId.\",\"default\":null},{\"name\":\"pageType\",\"type\":[\"null\",\"string\"],\"doc\":\"The type of page that this WebPage is.\",\"default\":null},{\"name\":\"productTitle\",\"type\":[\"null\",\"string\"],\"doc\":\"The title of the product.\",\"default\":null},{\"name\":\"sellingPrice\",\"type\":[\"null\",\"string\"],\"doc\":\"The price of the product.\",\"default\":null},{\"name\":\"breadcrumb\",\"type\":[\"null\",\"string\"],\"doc\":\"The breadcrumb to arrive at the product page.\",\"default\":null},{\"name\":\"images\",\"type\":[\"null\",\"string\"],\"doc\":\"The images in the product page.\",\"default\":null},{\"name\":\"brand\",\"type\":[\"null\",\"string\"],\"doc\":\"The brand name of the product.\",\"default\":null},{\"name\":\"size\",\"type\":[\"null\",\"string\"],\"doc\":\"The available sizes for the product.\",\"default\":null},{\"name\":\"sku\",\"type\":[\"null\",\"string\"],\"doc\":\"The SKU id for the product.\",\"default\":null},{\"name\":\"mapped\",\"type\":[\"null\",\"string\"],\"doc\":\"Indicates if the page is mapped or not.\",\"default\":null}]}");
+      .parse("{\"type\":\"record\",\"name\":\"WebPage\",\"namespace\":\"org.apache.nutch.storage\",\"doc\":\"WebPage is the primary data structure in Nutch representing crawl data for a given WebPage at some point in time\",\"fields\":[{\"name\":\"baseUrl\",\"type\":[\"null\",\"string\"],\"doc\":\"The original associated with this WebPage.\",\"default\":null},{\"name\":\"status\",\"type\":\"int\",\"doc\":\"A crawl status associated with the WebPage, can be of value STATUS_UNFETCHED - WebPage was not fetched yet, STATUS_FETCHED - WebPage was successfully fetched, STATUS_GONE - WebPage no longer exists, STATUS_REDIR_TEMP - WebPage temporarily redirects to other page, STATUS_REDIR_PERM - WebPage permanently redirects to other page, STATUS_RETRY - Fetching unsuccessful, needs to be retried e.g. transient errors and STATUS_NOTMODIFIED - fetching successful - page is not modified\",\"default\":0},{\"name\":\"fetchTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when the page was fetched.\",\"default\":0},{\"name\":\"prevFetchTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when the page was last fetched if it was previously fetched which can be used to calculate time delta within a fetching schedule implementation\",\"default\":0},{\"name\":\"fetchInterval\",\"type\":\"int\",\"doc\":\"The default number of seconds between re-fetches of a page. The default is considered as 30 days unless a custom fetch schedle is implemented.\",\"default\":0},{\"name\":\"retriesSinceFetch\",\"type\":\"int\",\"doc\":\"The number of retried attempts at fetching the WebPage since it was last successfully fetched.\",\"default\":0},{\"name\":\"modifiedTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when this WebPage was modified by the WebPage author, if this is not available we default to the server for this information. This is important to understand the changing nature of the WebPage.\",\"default\":0},{\"name\":\"prevModifiedTime\",\"type\":\"long\",\"doc\":\"The system time in milliseconds for when this WebPage was previously modified by the author, if this is not available then we default to the server for this information. This is important to understand the changing nature of a WebPage.\",\"default\":0},{\"name\":\"protocolStatus\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"ProtocolStatus\",\"doc\":\"A nested container representing data captured from web server responses.\",\"fields\":[{\"name\":\"code\",\"type\":\"int\",\"doc\":\"A protocol response code which can be one of SUCCESS - content was retrieved without errors, FAILED - Content was not retrieved. Any further errors may be indicated in args, PROTO_NOT_FOUND - This protocol was not found. Application may attempt to retry later, GONE - Resource is gone, MOVED - Resource has moved permanently. New url should be found in args, TEMP_MOVED - Resource has moved temporarily. New url should be found in args., NOTFOUND - Resource was not found, RETRY - Temporary failure. Application may retry immediately., EXCEPTION - Unspecified exception occured. Further information may be provided in args., ACCESS_DENIED - Access denied - authorization required, but missing/incorrect., ROBOTS_DENIED - Access denied by robots.txt rules., REDIR_EXCEEDED - Too many redirects., NOTFETCHING - Not fetching., NOTMODIFIED - Unchanged since the last fetch., WOULDBLOCK - Request was refused by protocol plugins, because it would block. The expected number of milliseconds to wait before retry may be provided in args., BLOCKED - Thread was blocked http.max.delays times during fetching.\",\"default\":0},{\"name\":\"args\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Optional arguments supplied to compliment and/or justify the response code.\",\"default\":[]},{\"name\":\"lastModified\",\"type\":\"long\",\"doc\":\"A server reponse indicating when this page was last modified, this can be unreliable at times hence this is used as a default fall back value for the preferred 'modifiedTime' and 'preModifiedTime' obtained from the WebPage itself.\",\"default\":0}]}],\"default\":null},{\"name\":\"content\",\"type\":[\"null\",\"bytes\"],\"doc\":\"The entire raw document content e.g. raw XHTML\",\"default\":null},{\"name\":\"contentType\",\"type\":[\"null\",\"string\"],\"doc\":\"The type of the content contained within the document itself. ContentType is an alias for MimeType. Historically, this parameter was only called MimeType, but since this is actually the value included in the HTTP Content-Type header, it can also include the character set encoding, which makes it more than just a MimeType specification. If MimeType is specified e.g. not None, that value is used. Otherwise, ContentType is used. If neither is given, the DEFAULT_CONTENT_TYPE setting is used.\",\"default\":null},{\"name\":\"prevSignature\",\"type\":[\"null\",\"bytes\"],\"doc\":\"An implementation of a WebPage's previous signature from which it can be identified and referenced at any point in time. This can be used to uniquely identify WebPage deltas based on page fingerprints.\",\"default\":null},{\"name\":\"signature\",\"type\":[\"null\",\"bytes\"],\"doc\":\"An implementation of a WebPage's signature from which it can be identified and referenced at any point in time. This is essentially the WebPage's fingerprint represnting its state for any point in time.\",\"default\":null},{\"name\":\"title\",\"type\":[\"null\",\"string\"],\"doc\":\"The title of the WebPage.\",\"default\":null},{\"name\":\"text\",\"type\":[\"null\",\"string\"],\"doc\":\"The textual content of the WebPage devoid from native markup.\",\"default\":null},{\"name\":\"parseStatus\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"ParseStatus\",\"doc\":\"A nested container representing parse status data captured from invocation of parsers on fetch of a WebPage\",\"fields\":[{\"name\":\"majorCode\",\"type\":\"int\",\"doc\":\"Major parsing status' including NOTPARSED (Parsing was not performed), SUCCESS (Parsing succeeded), FAILED (General failure. There may be a more specific error message in arguments.)\",\"default\":0},{\"name\":\"minorCode\",\"type\":\"int\",\"doc\":\"Minor parsing status' including SUCCESS_OK - Successful parse devoid of anomalies or issues, SUCCESS_REDIRECT - Parsed content contains a directive to redirect to another URL. The target URL can be retrieved from the arguments., FAILED_EXCEPTION - Parsing failed. An Exception occured which may be retrieved from the arguments., FAILED_TRUNCATED - Parsing failed. Content was truncated, but the parser cannot handle incomplete content., FAILED_INVALID_FORMAT - Parsing failed. Invalid format e.g. the content may be corrupted or of wrong type., FAILED_MISSING_PARTS - Parsing failed. Other related parts of the content are needed to complete parsing. The list of URLs to missing parts may be provided in arguments. The Fetcher may decide to fetch these parts at once, then put them into Content.metadata, and supply them for re-parsing., FAILED_MISING_CONTENT - Parsing failed. There was no content to be parsed - probably caused by errors at protocol stage.\",\"default\":0},{\"name\":\"args\",\"type\":{\"type\":\"array\",\"items\":\"string\"},\"doc\":\"Optional arguments supplied to compliment and/or justify the parse status code.\",\"default\":[]}]}],\"default\":null},{\"name\":\"score\",\"type\":\"float\",\"doc\":\"A score used to determine a WebPage's relevance within the web graph it is part of. This score may change over time based on graph characteristics.\",\"default\":0},{\"name\":\"reprUrl\",\"type\":[\"null\",\"string\"],\"doc\":\"In the case where we are given two urls, a source and a destination of a redirect, we should determine and persist the representative url. The logic used to determine this is based largely on Yahoo!'s Slurp Crawler\",\"default\":null},{\"name\":\"headers\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Header information returned from the web server used to server the content which is subsequently fetched from. This includes keys such as TRANSFER_ENCODING, CONTENT_ENCODING, CONTENT_LANGUAGE, CONTENT_LENGTH, CONTENT_LOCATION, CONTENT_DISPOSITION, CONTENT_MD5, CONTENT_TYPE, LAST_MODIFIED and LOCATION.\",\"default\":{}},{\"name\":\"outlinks\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Embedded hyperlinks which direct outside of the current domain.\",\"default\":{}},{\"name\":\"inlinks\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Embedded hyperlinks which link to pages within the current domain.\",\"default\":{}},{\"name\":\"markers\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"string\"]},\"doc\":\"Markers flags which represent user and machine decisions which have affected influenced a WebPage's current state. Markers can be system specific and user machine driven in nature. They are assigned to a WebPage on a job-by-job basis and thier values indicative of what actions should be associated with a WebPage.\",\"default\":{}},{\"name\":\"metadata\",\"type\":{\"type\":\"map\",\"values\":[\"null\",\"bytes\"]},\"doc\":\"A multi-valued metadata container used for storing everything from structured WebPage characterists, to ad-hoc extraction and metadata augmentation for any given WebPage.\",\"default\":{}},{\"name\":\"batchId\",\"type\":[\"null\",\"string\"],\"doc\":\"A batchId that this WebPage is assigned to. WebPage's are fetched in batches, called fetchlists. Pages are partitioned but can always be associated and fetched alongside pages of similar value (within a crawl cycle) based on batchId.\",\"default\":null},{\"name\":\"pageType\",\"type\":[\"null\",\"string\"],\"doc\":\"The type of page that this WebPage is.\",\"default\":null},{\"name\":\"productTitle\",\"type\":[\"null\",\"string\"],\"doc\":\"The title of the product.\",\"default\":null},{\"name\":\"sellingPrice\",\"type\":[\"null\",\"string\"],\"doc\":\"The price of the product.\",\"default\":null},{\"name\":\"breadcrumb\",\"type\":[\"null\",\"string\"],\"doc\":\"The breadcrumbs to arrive at the product page.\",\"default\":null},{\"name\":\"images\",\"type\":[\"null\",\"string\"],\"doc\":\"The images in the product page.\",\"default\":null},{\"name\":\"brand\",\"type\":[\"null\",\"string\"],\"doc\":\"The brand name of the product.\",\"default\":null},{\"name\":\"size\",\"type\":[\"null\",\"string\"],\"doc\":\"The available sizes for the product.\",\"default\":null},{\"name\":\"sku\",\"type\":[\"null\",\"string\"],\"doc\":\"The SKU id for the product.\",\"default\":null},{\"name\":\"mapped\",\"type\":[\"null\",\"string\"],\"doc\":\"Indicates if the page is mapped or not.\",\"default\":null},{\"name\":\"breadcrumb1\",\"type\":[\"null\",\"string\"],\"doc\":\"The first breadcrumb to arrive at the product page.\",\"default\":null},{\"name\":\"breadcrumb2\",\"type\":[\"null\",\"string\"],\"doc\":\"The second breadcrumb to arrive at the product page.\",\"default\":null},{\"name\":\"breadcrumb3\",\"type\":[\"null\",\"string\"],\"doc\":\"The third breadcrumb to arrive at the product page.\",\"default\":null},{\"name\":\"breadcrumb4\",\"type\":[\"null\",\"string\"],\"doc\":\"The fourth breadcrumb to arrive at the product page.\",\"default\":null}]}");
 
   /** Enum containing all data bean's fields. */
   public static enum Field {
@@ -43,7 +43,9 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
         23, "batchId"), PAGE_TYPE(24, "pageType"), PRODUCT_TITLE(25,
         "productTitle"), SELLING_PRICE(26, "sellingPrice"), BREADCRUMB(27,
         "breadcrumb"), IMAGES(28, "images"), BRAND(29, "brand"), SIZE(30,
-        "size"), SKU(31, "sku"), MAPPED(32, "mapped");
+        "size"), SKU(31, "sku"), MAPPED(32, "mapped"), BREADCRUMB1(33,
+        "breadcrumb1"), BREADCRUMB2(34, "breadcrumb2"), BREADCRUMB3(35,
+        "breadcrumb3"), BREADCRUMB4(36, "breadcrumb4");
     /**
      * Field's index.
      */
@@ -248,6 +250,14 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
   private java.lang.CharSequence sku;
   
   private java.lang.CharSequence mapped;
+  
+  private java.lang.CharSequence breadcrumb1;
+  
+  private java.lang.CharSequence breadcrumb2;
+  
+  private java.lang.CharSequence breadcrumb3;
+  
+  private java.lang.CharSequence breadcrumb4;
 
   public org.apache.avro.Schema getSchema() {
     return SCHEMA$;
@@ -322,6 +332,14 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
       return sku;
     case 32:
       return mapped;
+    case 33:
+      return breadcrumb1;
+    case 34:
+      return breadcrumb2;
+    case 35:
+      return breadcrumb3;
+    case 36:
+      return breadcrumb4;
     default:
       throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
@@ -439,6 +457,18 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
       break;
     case 32:
       mapped = (java.lang.CharSequence) (value);
+      break;
+    case 33:
+      breadcrumb1 = (java.lang.CharSequence) (value);
+      break;
+    case 34:
+      breadcrumb2 = (java.lang.CharSequence) (value);
+      break;
+    case 35:
+      breadcrumb3 = (java.lang.CharSequence) (value);
+      break;
+    case 36:
+      breadcrumb4 = (java.lang.CharSequence) (value);
       break;
     default:
       throw new org.apache.avro.AvroRuntimeException("Bad index");
@@ -1335,6 +1365,58 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
     return isDirty(32);
   }
   
+  public java.lang.CharSequence getBreadcrumb1() {
+    return breadcrumb1;
+  }
+
+  public void setBreadcrumb1(java.lang.CharSequence value) {
+    this.breadcrumb1 = value;
+    setDirty(33);
+  }
+
+  public boolean isBreadcrumb1Dirty(java.lang.CharSequence value) {
+    return isDirty(33);
+  }
+  
+  public java.lang.CharSequence getBreadcrumb2() {
+    return breadcrumb2;
+  }
+
+  public void setBreadcrumb2(java.lang.CharSequence value) {
+    this.breadcrumb2 = value;
+    setDirty(34);
+  }
+
+  public boolean isBreadcrumb2Dirty(java.lang.CharSequence value) {
+    return isDirty(34);
+  }
+  
+  public java.lang.CharSequence getBreadcrumb3() {
+    return breadcrumb3;
+  }
+
+  public void setBreadcrumb3(java.lang.CharSequence value) {
+    this.breadcrumb3 = value;
+    setDirty(35);
+  }
+
+  public boolean isBreadcrumb3Dirty(java.lang.CharSequence value) {
+    return isDirty(35);
+  }
+  
+  public java.lang.CharSequence getBreadcrumb4() {
+    return breadcrumb4;
+  }
+
+  public void setBreadcrumb4(java.lang.CharSequence value) {
+    this.breadcrumb4 = value;
+    setDirty(36);
+  }
+
+  public boolean isBreadcrumb4Dirty(java.lang.CharSequence value) {
+    return isDirty(36);
+  }
+  
   /** Creates a new WebPage RecordBuilder */
   public static org.apache.nutch.storage.WebPage.Builder newBuilder() {
     return new org.apache.nutch.storage.WebPage.Builder();
@@ -1409,12 +1491,6 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
     private java.util.Map<java.lang.CharSequence, java.nio.ByteBuffer> metadata;
     private java.lang.CharSequence batchId;
     private java.lang.CharSequence pageType;
-    private java.lang.CharSequence productTitle;
-    private java.lang.CharSequence sellingPrice;
-    private java.lang.CharSequence breadcrumb;
-    private java.lang.CharSequence images;
-    private java.lang.CharSequence brand;
-    private java.lang.CharSequence size;
 
     /** Creates a new Builder */
     private Builder() {
@@ -1553,36 +1629,6 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
         this.pageType = (java.lang.CharSequence) data().deepCopy(
             fields()[24].schema(), other.pageType);
         fieldSetFlags()[24] = true;
-      }
-      if (isValidValue(fields()[25], other.productTitle)) {
-        this.productTitle = (java.lang.CharSequence) data().deepCopy(
-            fields()[25].schema(), other.productTitle);
-        fieldSetFlags()[25] = true;
-      }
-      if (isValidValue(fields()[26], other.sellingPrice)) {
-        this.sellingPrice = (java.lang.CharSequence) data().deepCopy(
-            fields()[26].schema(), other.sellingPrice);
-        fieldSetFlags()[26] = true;
-      }
-      if (isValidValue(fields()[27], other.breadcrumb)) {
-        this.breadcrumb = (java.lang.CharSequence) data().deepCopy(
-            fields()[27].schema(), other.breadcrumb);
-        fieldSetFlags()[27] = true;
-      }
-      if (isValidValue(fields()[28], other.images)) {
-        this.images = (java.lang.CharSequence) data().deepCopy(
-            fields()[28].schema(), other.images);
-        fieldSetFlags()[28] = true;
-      }
-      if (isValidValue(fields()[29], other.brand)) {
-        this.brand = (java.lang.CharSequence) data().deepCopy(
-            fields()[29].schema(), other.brand);
-        fieldSetFlags()[29] = true;
-      }
-      if (isValidValue(fields()[30], other.size)) {
-        this.size = (java.lang.CharSequence) data().deepCopy(
-            fields()[30].schema(), other.size);
-        fieldSetFlags()[30] = true;
       }
     }
 
@@ -2222,162 +2268,6 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
       return this;
     }
     
-    /** Gets the value of the 'productTitle' field */
-    public java.lang.CharSequence getProductTitle() {
-      return productTitle;
-    }
-
-    /** Sets the value of the 'productTitle' field */
-    public org.apache.nutch.storage.WebPage.Builder setProductTitle(
-        java.lang.CharSequence value) {
-      validate(fields()[25], value);
-      this.productTitle = value;
-      fieldSetFlags()[25] = true;
-      return this;
-    }
-
-    /** Checks whether the 'productTitle' field has been set */
-    public boolean hasProductTitle() {
-      return fieldSetFlags()[25];
-    }
-    
-    /** Clears the value of the 'productTitle' field */
-    public org.apache.nutch.storage.WebPage.Builder clearProductTitle() {
-      pageType = null;
-      fieldSetFlags()[25] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'sellingPrice' field */
-    public java.lang.CharSequence getSellingPrice() {
-      return sellingPrice;
-    }
-
-    /** Sets the value of the 'sellingPrice' field */
-    public org.apache.nutch.storage.WebPage.Builder setSellingPrice(
-        java.lang.CharSequence value) {
-      validate(fields()[26], value);
-      this.sellingPrice = value;
-      fieldSetFlags()[26] = true;
-      return this;
-    }
-
-    /** Checks whether the 'sellingPrice' field has been set */
-    public boolean hasSellingPrice() {
-      return fieldSetFlags()[26];
-    }
-    
-    /** Clears the value of the 'sellingPrice' field */
-    public org.apache.nutch.storage.WebPage.Builder clearSellingPrice() {
-      sellingPrice = null;
-      fieldSetFlags()[26] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'breadcrumb' field */
-    public java.lang.CharSequence getBreadcrumb() {
-      return breadcrumb;
-    }
-
-    /** Sets the value of the 'breadcrumb' field */
-    public org.apache.nutch.storage.WebPage.Builder setBreadcrumb(
-        java.lang.CharSequence value) {
-      validate(fields()[27], value);
-      this.breadcrumb = value;
-      fieldSetFlags()[27] = true;
-      return this;
-    }
-
-    /** Checks whether the 'breadcrumb' field has been set */
-    public boolean hasBreadcrumb() {
-      return fieldSetFlags()[27];
-    }
-    
-    /** Clears the value of the 'breadcrumb' field */
-    public org.apache.nutch.storage.WebPage.Builder clearBreadcrumb() {
-      breadcrumb = null;
-      fieldSetFlags()[27] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'images' field */
-    public java.lang.CharSequence getImages() {
-      return images;
-    }
-
-    /** Sets the value of the 'images' field */
-    public org.apache.nutch.storage.WebPage.Builder setImages(
-        java.lang.CharSequence value) {
-      validate(fields()[28], value);
-      this.images = value;
-      fieldSetFlags()[28] = true;
-      return this;
-    }
-
-    /** Checks whether the 'images' field has been set */
-    public boolean hasImages() {
-      return fieldSetFlags()[28];
-    }
-    
-    /** Clears the value of the 'images' field */
-    public org.apache.nutch.storage.WebPage.Builder clearImages() {
-      images = null;
-      fieldSetFlags()[28] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'brand' field */
-    public java.lang.CharSequence getBrand() {
-      return brand;
-    }
-
-    /** Sets the value of the 'brand' field */
-    public org.apache.nutch.storage.WebPage.Builder setBrand(
-        java.lang.CharSequence value) {
-      validate(fields()[29], value);
-      this.brand = value;
-      fieldSetFlags()[29] = true;
-      return this;
-    }
-
-    /** Checks whether the 'brand' field has been set */
-    public boolean hasBrand() {
-      return fieldSetFlags()[29];
-    }
-    
-    /** Clears the value of the 'brand' field */
-    public org.apache.nutch.storage.WebPage.Builder clearBrand() {
-      brand = null;
-      fieldSetFlags()[29] = false;
-      return this;
-    }
-    
-    /** Gets the value of the 'size' field */
-    public java.lang.CharSequence getSize() {
-      return size;
-    }
-
-    /** Sets the value of the 'size' field */
-    public org.apache.nutch.storage.WebPage.Builder setSize(
-        java.lang.CharSequence value) {
-      validate(fields()[30], value);
-      this.size = value;
-      fieldSetFlags()[30] = true;
-      return this;
-    }
-
-    /** Checks whether the 'size' field has been set */
-    public boolean hasSize() {
-      return fieldSetFlags()[30];
-    }
-    
-    /** Clears the value of the 'size' field */
-    public org.apache.nutch.storage.WebPage.Builder clearSize() {
-      size = null;
-      fieldSetFlags()[30] = false;
-      return this;
-    }
-
     @Override
     public WebPage build() {
       try {
@@ -2437,18 +2327,6 @@ public class WebPage extends org.apache.gora.persistency.impl.PersistentBase
             : (java.lang.CharSequence) defaultValue(fields()[23]);
         record.pageType = fieldSetFlags()[24] ? this.pageType
                 : (java.lang.CharSequence) defaultValue(fields()[24]);
-        record.productTitle = fieldSetFlags()[25] ? this.productTitle
-            : (java.lang.CharSequence) defaultValue(fields()[25]);
-        record.sellingPrice = fieldSetFlags()[26] ? this.sellingPrice
-            : (java.lang.CharSequence) defaultValue(fields()[26]);
-        record.breadcrumb = fieldSetFlags()[27] ? this.breadcrumb
-            : (java.lang.CharSequence) defaultValue(fields()[27]);
-        record.images = fieldSetFlags()[28] ? this.images
-            : (java.lang.CharSequence) defaultValue(fields()[28]);
-        record.brand = fieldSetFlags()[29] ? this.brand
-            : (java.lang.CharSequence) defaultValue(fields()[29]);
-        record.size = fieldSetFlags()[30] ? this.size
-            : (java.lang.CharSequence) defaultValue(fields()[30]);
         return record;
       } catch (Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);

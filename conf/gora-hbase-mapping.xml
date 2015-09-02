@@ -93,6 +93,10 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="size" family="j" qualifier="s"/>
         <field name="sku" family="j" qualifier="sku"/>
         <field name="mapped" family="j" qualifier="m"/>
+        <field name="breadcrumb1" family="j" qualifier="bc1"/>
+        <field name="breadcrumb2" family="j" qualifier="bc2"/>
+        <field name="breadcrumb3" family="j" qualifier="bc3"/>
+        <field name="breadcrumb4" family="j" qualifier="bc4"/>
     </class>
     
     <table name="host">
