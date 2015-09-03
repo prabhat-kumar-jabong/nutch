@@ -15,8 +15,6 @@ import org.w3c.dom.Node;
 public class PageNodeTextReader extends AbstractPageReader{
 
 	 public static final Logger LOG = LoggerFactory.getLogger(PageNodeTextReader.class);
-	 
-	 
 	
 	@Override
 	public void read(PageSource source,Map<String, Object> outputMap,Map<String, String> params) throws PluginRuntimeException {
@@ -27,7 +25,7 @@ public class PageNodeTextReader extends AbstractPageReader{
 		try {
 			
 			XPathExpression xPathExpression = getXPathExpression(xpathString);
-	        Document root = getDocument(source);
+			Document root = getDocument(source);
 			Node node = (Node) xPathExpression.evaluate(root, XPathConstants.NODE);
 			if(node!=null){
 				LOG.trace(key+":"+node.getTextContent());

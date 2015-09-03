@@ -22,6 +22,7 @@ public class Parse {
   private String title;
   private Outlink[] outlinks;
   private org.apache.nutch.storage.ParseStatus parseStatus;
+  private boolean pdp;
   private String company;
   private String productTitle;
   private String sellingPrice;
@@ -30,7 +31,7 @@ public class Parse {
   private String images;
   private String brand;
   private String size;
-  private Integer availableSizeCount;
+  private String availableSizeCount;
   private String sku;
   private Integer mapped;
   private String breadcrumb1;
@@ -50,15 +51,16 @@ public class Parse {
   }
 
   public Parse(String text, String title, Outlink[] outlinks,
-      org.apache.nutch.storage.ParseStatus parseStatus, String company,
+      org.apache.nutch.storage.ParseStatus parseStatus, boolean isPDP, String company,
       String productTitle, String sellingPrice, String mrp, String breadcrumb,
-      String images, String brand, String size, Integer availableSizeCount,
+      String images, String brand, String size, String availableSizeCount,
       String sku, Integer mapped, String breadcrumb1, String breadcrumb2,
       String breadcrumb3, String breadcrumb4) {
     this.text = text;
     this.title = title;
     this.outlinks = outlinks;
     this.parseStatus = parseStatus;
+    this.pdp = isPDP;
     this.company = company;
     this.productTitle = productTitle;
     this.sellingPrice = sellingPrice;
@@ -108,6 +110,14 @@ public class Parse {
     this.parseStatus = parseStatus;
   }
   
+  public boolean isPdp() {
+    return pdp;
+  }
+
+  public void setPdp(boolean pdp) {
+    this.pdp = pdp;
+  }
+
   public String getCompany() {
     return company;
   }
@@ -172,11 +182,11 @@ public class Parse {
     this.size = size;
   }
   
-  public Integer getAvailableSizeCount() {
+  public String getAvailableSizeCount() {
     return availableSizeCount;
   }
 
-  public void setAvailableSizeCount(Integer availableSizeCount) {
+  public void setAvailableSizeCount(String availableSizeCount) {
     this.availableSizeCount = availableSizeCount;
   }
 

@@ -31,7 +31,7 @@ public class PagePDPReader extends AbstractPageReader{
 		String key = params.get("key");
 		try {
 			XPathExpression xPathExpression = getXPathExpression(xpathString);
-	        Document root = getDocument(source);
+			Document root = getDocument(source);
 			Node node = (Node) xPathExpression.evaluate(root, XPathConstants.NODE);
 			if(node!=null){
 				
