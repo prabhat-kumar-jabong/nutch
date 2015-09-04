@@ -10,7 +10,7 @@
       <Readers>
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='brand']/text()" key="brand" />
           <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='productTitle']/text()" key="title"  />
-          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']/table/tbody/tr[1]/td[2]/text()" key="mrp"  />      
+          <Reader id="org.apache.nutch.namespace.page.PageNodeTextReader" xpath="//*[@id='price']//*[@class='a-span12 a-color-secondary a-size-base a-text-strike' or @id='priceblock_ourprice']/text()" key="mrp"  />      
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@name='dropdown_selected_size_name']/option/text()" key="size"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='variation_size_name']/div/span[1]/text()" key="size"  />
           <Reader id="org.apache.nutch.namespace.page.PageNodeListReader" xpath="//*[@id='main-image-container']//img/@data-a-dynamic-image" key="images"  />

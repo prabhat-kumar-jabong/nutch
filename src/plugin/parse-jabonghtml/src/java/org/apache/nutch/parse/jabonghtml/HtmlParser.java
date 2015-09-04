@@ -197,19 +197,20 @@ public class HtmlParser implements Parser {
 
     String text = "";
     String title = "";
+    boolean isPDP = false;
     String productTitle = "";
-    String sellingPrice = null;
+    String sellingPrice = "";
     String mrp = "";
     String breadcrumb = "";
     String images = "";
     String brand = "";
     String size = "";
     String sku = "";
-    String breadcrumb1 = null;
-    String breadcrumb2 = null;
-    String breadcrumb3 = null;
-    String breadcrumb4 = null;
-    Integer availableSizeCount = null;
+    String breadcrumb1 = "";
+    String breadcrumb2 = "";
+    String breadcrumb3 = "";
+    String breadcrumb4 = "";
+    String availableSizeCount = "";
     String company = "";
     Integer mapped = ((page.get(WebPage.Field.valueOf("MAPPED").ordinal()) == null) ? PDPMapping.NEW.getValue() : Integer.valueOf(page.get(WebPage.Field.valueOf("MAPPED").ordinal()).toString()));
     
@@ -287,20 +288,17 @@ public class HtmlParser implements Parser {
   		
   		Map<String, Object> pdp = (Map<String, Object>)outputMap.get("pdp");
     	if(pdp!=null) {
+    	  isPDP = true;
         Gson gson = new Gson();
         text = gson.toJson(pdp);
-        productTitle = (String) pdp.get("title");
-        sellingPrice = (String) pdp.get("sp");
-        if(pdp.get("mrp") != null) {
-          mrp = (String) pdp.get("mrp");
-        }
-        breadcrumb = gson.toJson(pdp.get("breadCrumb"));
-        images = gson.toJson(pdp.get("images"));
-        brand = (String) pdp.get("brand");
-        size = gson.toJson(pdp.get("size"));
-        if(pdp.get("size") != null) {
-          availableSizeCount = ((List)pdp.get("size")).size() - 1;
-        }
+        productTitle = pdp.get("title") != null ? (String) pdp.get("title") : productTitle;
+        sellingPrice = pdp.get("sp") != null ? (String) pdp.get("sp") : sellingPrice;
+        mrp = pdp.get("mrp") != null ? (String) pdp.get("mrp") : mrp;
+        breadcrumb = pdp.get("breadCrumb") != null ? gson.toJson(pdp.get("breadCrumb")) : breadcrumb;
+        images = pdp.get("images") != null ? gson.toJson(pdp.get("images")) : images;
+        brand = pdp.get("brand") != null ? (String) pdp.get("brand") : brand;;
+        size = pdp.get("size") != null ? gson.toJson(pdp.get("size")) : size;
+        availableSizeCount = pdp.get("size") != null ? String.valueOf(((List)pdp.get("size")).size() - 1) : availableSizeCount;
         if(pdp.get("sku1Key") != null && pdp.get("sku1Key").toString().trim().equals("ASIN:")) {
           sku = (String) pdp.get("sku1Value");
         } else if(pdp.get("sku2Key") != null && pdp.get("sku2Key").toString().trim().equals("ASIN:")) {
@@ -390,7 +388,7 @@ public class HtmlParser implements Parser {
           new Utf8(Integer.toString(metaTags.getRefreshTime())));
     }
 
-    Parse parse = new Parse(text, title, outlinks, status, company,
+    Parse parse = new Parse(text, title, outlinks, status, isPDP, company,
         productTitle, sellingPrice, mrp, breadcrumb, images, brand, size,
         availableSizeCount, sku, mapped, breadcrumb1, breadcrumb2, breadcrumb3,
         breadcrumb4);
