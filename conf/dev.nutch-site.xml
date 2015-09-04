@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+<property>
+ <name>http.agent.name</name>
+ <value>AdsBot-Google</value>
+</property>
+<property>
+  <name>http.robots.agents</name>
+  <value>Adsbot-Google,Googlebot-Image,Mediapartners-Google,googlebot</value>
+</property>
+<property>
+  <name>http.agent.description</name>
+  <value>Google's crawler</value>
+  <description>Further description of our bot- this text is used in
+  the User-Agent header.  It appears in parenthesis after the agent name.
+  </description>
+</property>
+
+<property>
+  <name>http.agent.url</name>
+  <value>http://www.googlebot.com/bot.html</value>
+  <description>A URL to advertise in the User-Agent header.  This will 
+   appear in parenthesis after the agent name. Custom dictates that this
+   should be a URL of a page explaining the purpose and behavior of this
+   crawler.
+  </description>
+</property>
+
+<property>
+  <name>http.agent.email</name>
+  <value>googlebot@google.com</value>
+  <description>An email address to advertise in the HTTP 'From' request
+   header and User-Agent header. A good practice is to mangle this
+   address (e.g. 'info at example dot com') to avoid spamming.
+  </description>
+</property>
+
+<property>
+  <name>http.agent.version</name>
+  <value>Googlebot/2.X </value>
+  <description>A version string to advertise in the User-Agent 
+   header.</description>
+</property>
+<property>
+ <name>storage.data.store.class</name>
+ <value>org.apache.gora.hbase.store.HBaseStore</value>
+ <description>Default class for storing data</description>
+</property>
+<!--property>
+  <name>robot.rules.whitelist</name>
+  <value>flipkart.com</value>
+  <description>Comma separated list of hostnames or IP addresses to ignore robot rules parsing for.
+  </description>
+</property>
+<property>
+  <name>protocol.plugin.check.robots</name>
+  <value>false</value>
+  <description> $
+  </description>
+</property-->
+<property>
+  <name>http.verbose</name>
+  <value>true</value>
+  <description>If true, HTTP will log more verbosely.</description>
+</property>
+<property>
+  <name>fetcher.verbose</name>
+  <value>true</value>
+  <description>If true, fetcher will log more verbosely.</description>
+</property>
+<property>
+   <name>plugin.folders</name>
+   <value>/Users/jade/workspace/jabonglabs/nutch/build/plugins</value>
+ </property>
+ <property>
+  <name>flipkart.urlnormalizer.regex.file</name>
+  <value>flipkart-regex-normalize.xml</value>
+  <description>Name of the config file used by the RegexUrlNormalizer for flipkart class.
+  </description>
+</property>
+
+<property>
+  <name>amazon.redirect.allow</name>
+  <value>true</value>
+  <description>for amazon redirect has to be allowed due to their behaviour</description>
+</property>
+
+<property>
+  <name>urllist.urlfilter.regex.file</name>
+  <value>urllist-regex-urlfilter.txt</value>
+  <description>Name of file on CLASSPATH containing regular expressions
+  used by urllist-urlfilter-regex (RegexURLFilter) plugin.</description>
+</property>
+
+<!-- <property>
+  <name>amazon.header.setting.file</name>
+  <value>amazon.properties</value>
+  <description>Client specific behaviour incase special treatment needed.</description>
+</property>
+ -->
+
+<property>
+  <name>plugin.includes</name>
+ <value>protocol-httpjabongclient|urlfilter-regex|parse-(jabonghtml|tika|sitemap|page)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic</value>
+ <description>Regular expression naming plugin directory names to
+  include.  Any plugin not matching this expression is excluded.
+  In any case you need at least include the nutch-extensionpoints plugin. By
+  default Nutch includes crawling just HTML and plain text via HTTP,
+  and basic indexing and search plugins. In order to use HTTPS please enable 
+  protocol-httpclient, but be aware of possible intermittent problems with the 
+  underlying commons-httpclient library.
+  </description>
+</property>
+
+
+
+<property>
+  <name>http.useHttp11</name>
+  <value>true</value>
+  <description>For amazon this value has to be set to true in othercases it does not matter.</description>
+</property>
+
+<property>
+  <name>parser.timeout</name>
+  <value>-1</value>
+  <description>Timeout in seconds for the parsing of a document, otherwise treats it as an exception and 
+  moves on the the following documents. This parameter is applied to any Parser implementation. 
+  Set to -1 to deactivate, bearing in mind that this could cause
+  the parsing to crash because of a very long or corrupted document.
+  </description>
+</property>
+<property>
+  <name>io.serializations</name>
+  <value>org.apache.hadoop.io.serializer.WritableSerialization</value>
+  <description>A list of serialization classes that can be used for
+  obtaining serializers and deserializers.</description>
+</property>
+</configuration>

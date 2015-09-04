@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -534,6 +535,19 @@ public class HtmlParser implements Parser {
     System.out.println("title: " + parse.getTitle());
     System.out.println("text: " + parse.getText());
     System.out.println("outlinks: " + Arrays.toString(parse.getOutlinks()));
+    
+    System.out.println("======================== seed page ======================= ");
+    
+   Outlink[] links = parse.getOutlinks();
+   File f = new File(name.substring(0, name.lastIndexOf("/")+1).concat("seed.txt"));
+   System.out.println("Seed file "+f.getAbsolutePath());
+   FileOutputStream fos = new FileOutputStream(f);
+   for (int i = 0; i < links.length; i++) {
+	fos.write(links[i].getAnchor().concat("\n").getBytes());
+	fos.flush();
+   }
+   
+   fos.close();
 
   }
 

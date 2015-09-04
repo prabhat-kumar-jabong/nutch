@@ -13,3 +13,5 @@ urls/
 .settings
 conf/jtidy-r938-sources.zip
 hadoop.log
+**/zomato.html
+**/zomato.page.xml
