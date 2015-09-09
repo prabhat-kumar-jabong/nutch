@@ -61,8 +61,10 @@ public class GeneratorMapper extends
             .toString().equals(rerunConditionColumnValue)) {
 
       GeneratorJob.LOG.debug("PDP Run in progress");
-
-    } else if (Mark.GENERATE_MARK.checkMark(page) != null) {
+      addPageToBatch(url, page, context);
+    }
+    
+    if (Mark.GENERATE_MARK.checkMark(page) != null) {
       GeneratorJob.LOG.debug("Skipping {}; already generated", url);
       return;
     }
@@ -104,6 +106,12 @@ public class GeneratorMapper extends
       }
       return;
     }
+    
+    addPageToBatch(url, page, context);
+  }
+  
+  private void addPageToBatch(String url, WebPage page, Context context)
+      throws IOException, InterruptedException {
     float score = page.getScore();
     try {
       score = scoringFilters.generatorSortValue(url, page, score);
