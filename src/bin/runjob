@@ -1,0 +1,14 @@
+#!/bin/sh
+d=$(date +%s)
+y=1000
+JOBDATE=`expr $d \* $y`
+JOBNAME="$1"
+if ["$JOBNAME" = "scrape"]
+    /home/primus/bin/prodscrape jabong amazon MAPPED 1
+elif ["$JOBNAME" = "crawl"]
+    /home/primus/bin/prodcrawl /home/primus/urls/ jabong 1000 amazon
+else
+    exit -1;
+fi
+# Call the sqoop scripts to persist the data in MIS
+sh /home/primus/sqoop/export/export_script.sh $JOBDATE

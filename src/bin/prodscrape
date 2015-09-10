@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # 
-# The Scrape command script : scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>
+# The Scrape command script : scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>
 #
 # 
 # UNLIKE THE NUTCH ALL-IN-ONE-CRAWL COMMAND THIS SCRIPT DOES THE LINK INVERSION AND 
@@ -27,27 +27,27 @@ RERUN_COLUMN="$3"
 RERUN_VALUE="$4"
 if [ "$#" -ne 4 ]; then
     echo "Unknown # of arguments $#"
-    echo "Usage: scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>"
+    echo "Usage: scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>"
     exit -1;
 fi
 
 if [ "$CRAWL_ID" = "" ]; then
-    echo "Missing crawlID : scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>"
+    echo "Missing crawlID : scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>"
     exit -1;
 fi
 
 if [ "$NAMESPACE" = "" ]; then
-    echo "Missing namespaceId : scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>"
+    echo "Missing namespace : scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>"
     exit -1;
 fi
 
 if [ "$RERUN_COLUMN" = "" ]; then
-    echo "Missing rerunColumnName : scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>"
+    echo "Missing rerunColumnName : scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>"
     exit -1;
 fi
 
 if [ "$RERUN_VALUE" = "" ]; then
-    echo "Missing rerunColumnValue : scrape <crawlId> <namespaceId> <rerunColumnName> <rerunColumnValue>"
+    echo "Missing rerunColumnValue : scrape <crawlId> <namespace> <rerunColumnName> <rerunColumnValue>"
     exit -1;
 fi
 

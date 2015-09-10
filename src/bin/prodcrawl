@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # 
-# The Crawl command script : crawl <seedDir> <crawlId> <solrURL> <numberOfRounds>
+# The Crawl command script : crawl <seedDir> <crawlId> <numberOfRounds> <namespace>
 #
 # 
 # UNLIKE THE NUTCH ALL-IN-ONE-CRAWL COMMAND THIS SCRIPT DOES THE LINK INVERSION AND 
@@ -31,26 +31,27 @@ elif [ "$#" -eq 4 ]; then
      LIMIT="$3"
 else
     echo "Unknown # of arguments $#"
-    echo "Usage: crawl <seedDir> <crawlID> [<solrUrl>] <numberOfRounds>"
+    echo "Usage: crawl <seedDir> <crawlID> <numberOfRounds> <namespace>"
     exit -1;
 fi
 
 if [ "$SEEDDIR" = "" ]; then
-    echo "Missing seedDir : crawl <seedDir> <crawlID> [<solrURL>] <numberOfRounds>"
+    echo "Missing seedDir : crawl <seedDir> <crawlID> <numberOfRounds> <namespace>"
     exit -1;
 fi
 
 if [ "$CRAWL_ID" = "" ]; then
-    echo "Missing crawlID : crawl <seedDir> <crawlID> [<solrURL>] <numberOfRounds>"
+    echo "Missing crawlID : crawl <seedDir> <crawlID> <numberOfRounds> <namespace>"
     exit -1;
 fi
 
-if [ "$SOLRURL" = "" ]; then
-    echo "No SOLRURL specified. Skipping indexing."
+if [ "$LIMIT" = "" ]; then
+    echo "Missing numberOfRounds : crawl <seedDir> <crawlID> <numberOfRounds> <namespace>"
+    exit -1;
 fi
 
-if [ "$LIMIT" = "" ]; then
-    echo "Missing numberOfRounds : crawl <seedDir> <crawlID> [<solrURL>] <numberOfRounds>"
+if [ "$NAMESPACE" = "" ]; then
+    echo "Missing namespace : crawl <seedDir> <crawlID> <numberOfRounds> <namespace>"
     exit -1;
 fi
 
