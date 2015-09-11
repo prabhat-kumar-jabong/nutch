@@ -1,14 +1,22 @@
 #!/bin/sh
 d=$(date +%s)
-y=1000
+y=1
 JOBDATE=`expr $d \* $y`
-JOBNAME="$1"
-if ["$JOBNAME" = "scrape"]
-    /home/primus/bin/prodscrape jabong amazon MAPPED 1
-elif ["$JOBNAME" = "crawl"]
-    /home/primus/bin/prodcrawl /home/primus/urls/ jabong 1000 amazon
+JOBNAME=$1
+export JAVA_HOME=/usr/jdk64/jdk1.8.0_40;
+export PATH=$PATH:$JAVA_HOME/bin;
+MAPPING_VALUE=1
+if [ $1 = "scrape" ]; then
+  /home/primus/job/bin/prodscrape jabong amazon MAPPED 1
+elif [ $1 = "crawl" ]; then
+  MAPPING_VALUE=0
+  /home/primus/job/bin/crawl /user/primus/job/urls/ jabong 1000 amazon
 else
     exit -1;
 fi
+
 # Call the sqoop scripts to persist the data in MIS
-sh /home/primus/sqoop/export/export_script.sh $JOBDATE
+echo "Nutch job completed. Running sqoop job with arguments : Job Date : $JOBDATE , mapping value : $MAPPING_VALUE"
+sh /home/primus/sqoop/export/export_script.sh $JOBDATE $MAPPING_VALUE
+
+exit 0;
