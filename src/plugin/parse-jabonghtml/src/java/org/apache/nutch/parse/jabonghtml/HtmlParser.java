@@ -294,7 +294,6 @@ public class HtmlParser implements Parser {
         productTitle = pdp.get("title") != null ? (String) pdp.get("title") : productTitle;
         sellingPrice = pdp.get("sp") != null ? (String) pdp.get("sp") : sellingPrice;
         mrp = pdp.get("mrp") != null ? (String) pdp.get("mrp") : mrp;
-        breadcrumb = pdp.get("breadCrumb") != null ? gson.toJson(pdp.get("breadCrumb")) : breadcrumb;
         images = pdp.get("images") != null ? gson.toJson(pdp.get("images")) : images;
         brand = pdp.get("brand") != null ? (String) pdp.get("brand") : brand;;
         size = pdp.get("size") != null ? gson.toJson(pdp.get("size")) : size;
@@ -306,18 +305,19 @@ public class HtmlParser implements Parser {
         } else if(pdp.get("sku3Key") != null && pdp.get("sku3Key").toString().trim().equals("ASIN:")) {
           sku = (String) pdp.get("sku3Value");
         }
-        if(pdp.get("breadCrumb") != null) {
-          List<String> bc = (List<String>) pdp.get("breadCrumb");
-          switch (bc.size()) {
-          case 4:
-            breadcrumb4 = bc.get(3);
-          case 3:
-            breadcrumb3 = bc.get(2);
-          case 2:
-            breadcrumb2 = bc.get(1);
-          case 1:
-            breadcrumb1 = bc.get(0);
-          }
+        Object breadcrumbData = null;
+        if (pdp.get("breadCrumb1") != null) {
+          breadcrumbData = pdp.get("breadCrumb1");
+        } else if (pdp.get("breadCrumb2") != null) {
+          breadcrumbData = pdp.get("breadCrumb2");
+        }
+        if (breadcrumbData != null) {
+          breadcrumb = gson.toJson(breadcrumbData);
+          List<String> bc = (List<String>) breadcrumbData;
+          breadcrumb1 = bc.size() > 0 ? bc.get(0) : breadcrumb1;
+          breadcrumb2 = bc.size() > 1 ? bc.get(1) : breadcrumb2;
+          breadcrumb3 = bc.size() > 2 ? bc.get(2) : breadcrumb3;
+          breadcrumb4 = bc.size() > 3 ? bc.get(3) : breadcrumb4;
         }
       }
     	
