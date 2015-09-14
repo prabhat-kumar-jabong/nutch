@@ -67,7 +67,6 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="modifiedTime" family="f" qualifier="mod"/>
         <field name="prevModifiedTime" family="f" qualifier="pmod"/>
         <field name="batchId" family="f" qualifier="bid"/>
-        <field name="pageType" family="f" qualifier="pt"/>
 
         <!-- parse fields                                       -->
         <field name="title" family="p" qualifier="t"/>
@@ -85,6 +84,7 @@ http://gora.apache.org/current/gora-hbase.html
         <field name="markers" family="mk"/>
         
         <!-- Jabong parse fields                                -->
+        <field name="pageType" family="j" qualifier="pt"/>
         <field name="company" family="j" qualifier="c"/>
         <field name="productTitle" family="j" qualifier="t"/>
         <field name="sellingPrice" family="j" qualifier="sp"/>
